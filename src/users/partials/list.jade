@@ -1,0 +1,23 @@
+.panel.with-nav-tabs.panel-primary
+    .panel-heading
+        ul.nav.nav-tabs
+            li.active
+                a(href="#tab1", data-toggle="tab")
+                    i.fa.fa-fw.fa-th-list
+                    | &nbsp;รายชื่อผู้ใช้งาน
+    .panel-body
+        .tab-content
+            .tab-pane.fade.in.active#tab1
+                //table order history
+                table.table.table-striped
+                    thead
+                        tr
+                            th #
+                            th ชื่อผู้ใช้งาน
+                            th ชื่อ - สกุล
+                            th ประเภทผู้ใช้งาน
+                            th เข้าใช้งานล่าสุด
+                            th #
+                    tbody
+                        tr
+                            td(colspan="6") ...

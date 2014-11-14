@@ -1,0 +1,29 @@
+extends ../layouts/main
+block scripts
+   script(src="js/app/userList.js")
+block content
+   ol.breadcrumb
+      li
+         a(href="index.html")
+            i.fa.fa-home
+            | &nbsp;หน้าหลัก
+      li.active
+         i.fa.fa-users
+         | &nbsp;ทะเบียนผู้ใช้งาน
+   .row
+      .col-md-3.col-sm-3.col-lg-3
+         ul.list-group
+            li.list-group-item.active
+               i.fa.fa-fw.fa-home
+               | เมนูหลัก
+            li.list-group-item
+               a(href="#")
+                  i.fa.fa-fw.fa-copy
+                  | &nbsp;รายชื่อผู้ใช้งาน
+            li.list-group-item
+               a(href="#")
+                  i.fa.fa-fw.fa-plus
+                  | &nbsp;เพิ่มผู้ใช้งาน
+
+      .col-md-9.col-lg-9.col-sm-9.content-line
+         div(ng-view)

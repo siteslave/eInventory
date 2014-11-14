@@ -1,0 +1,85 @@
+extends ../layouts/main
+
+block content
+   ol.breadcrumb
+      li
+         a(href="index.html")
+            i.fa.fa-home
+            | &nbsp;หน้าหลัก
+      li.active
+         i.fa.fa-shopping-cart
+         | &nbsp;เบิกเวชภัณฑ์
+   .row
+      .col-md-3.col-sm-3.col-lg-3
+         ul.list-group
+            li.list-group-item.active
+               i.fa.fa-fw.fa-home
+               | เมนูหลัก
+            li.list-group-item
+               a(href="#")
+                  i.fa.fa-fw.fa-copy
+                  | &nbsp;รายการใบเบิก
+            li.list-group-item
+               a(href="#")
+                  i.fa.fa-fw.fa-plus
+                  | &nbsp;เพิ่มใบเบิก
+
+      .col-md-9.col-lg-9.col-sm-9.content-line
+
+         .panel.with-nav-tabs.panel-primary
+            .panel-heading
+               ul.nav.nav-tabs
+                  li.active
+                     a(href="#tab1", data-toggle="tab")
+                        i.fa.fa-fw.fa-th-list
+                        | &nbsp;รออนุมัติ&nbsp;
+                        span.badge 99+
+                  li
+                     a(href="#tab2", data-toggle="tab")
+                        i.fa.fa-fw.fa-check
+                        | &nbsp;อนุมัติ&nbsp;
+                        span.badge 5
+
+                  li
+                     a(href="#tab3", data-toggle="tab")
+                        i.fa.fa-fw.fa-remove
+                        | &nbsp;ยกเลิก&nbsp;
+                        span.badge 1
+            .panel-body
+               .tab-content
+                  .tab-pane.fade.in.active#tab1
+                     //table order history
+                     table.table.table-striped
+                        thead
+                           tr
+                              th เลขที่
+                              th วันที่
+                              th เบิกจาก
+                              th จำนวน
+                              th ราคา
+                              th #
+                        tbody
+                           tr
+                              td(colspan="6") ...
+
+                     nav
+                        ul.pagination
+                           li.disabled
+                              a(href="#") &laquo;
+                           li.active
+                              a(href="#") 1
+                                 span.sr-only (current)
+                           li
+                              a(href="#") 2
+                           li
+                              a(href="#") 3
+                           li
+                              a(href="#") 4
+                           li
+                              a(href="#") 5
+                           li
+                              a(href="#") &raquo;
+                  .tab-pane.fade#tab2 Approve
+                  .tab-pane.fade#tab3 Cancel
+         // content
+
