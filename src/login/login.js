@@ -1,7 +1,4 @@
+
 ;(function (window, angular) {
-
-    'use strict';
-
-    angular.module('app.Login', []);
-
+    angular.module('app.login', ['app.controller.Login']);
 })(window, window.angular);

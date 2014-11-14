@@ -64,12 +64,3 @@ onload = function() {
 process.on('uncaughtException', function (e) {
     console.log(e);
 });
-
-;(function (window, angular) {
-    angular.module('app', [
-        'app.connections',
-        'app.users',
-        'app.filters.Main',
-        'app.services.Users'
-    ]);
-})(window, window.angular);

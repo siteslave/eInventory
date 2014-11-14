@@ -1,9 +1,7 @@
 ;(function (window, angular) {
-    'use strict';
-
     var App = window.App;
 
-    // Modules requirement
+    //// Modules requirement
     var jf = require('jsonfile'),
         crypto = require('crypto');
 
@@ -15,13 +13,13 @@
         connection: config.db
     });
 
-    angular.module('app.Login')
+    angular.module('app.service.Login', [])
 
         .factory('Login', function ($q) {
 
-            var Login = {};
+            var dataFactory = {};
 
-            Login.checkAuth = function (username, password) {
+            dataFactory.checkAuth = function (username, password) {
                 var q = $q.defer();
                 // password encryption
                 var hash = crypto.createHmac('sha256', App.saltKey).update(password).digest('base64');
@@ -47,6 +45,7 @@
                 return q.promise;
             };
 
-            return Login;
+            return dataFactory;
         });
+
 })(window, window.angular);
