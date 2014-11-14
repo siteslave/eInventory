@@ -61,6 +61,21 @@ onload = function() {
     win.show();
 };
 
+angular.module('app.Config', [])
+.config(function ($provide) {
+        $provide.provider('Config', function () {
+            return {
+                $get: function () {
+                    // Get configuration
+                    var config = jf.readFileSync(App.configFile);
+                    return {
+                        data: config
+                    };
+                }
+            };
+        });
+    });
+
 process.on('uncaughtException', function (e) {
     console.log(e);
 });
