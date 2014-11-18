@@ -1,0 +1,100 @@
+extends ../layouts/login
+
+block scripts
+   script(src="Connection.js")
+   script(src="ConnectionController.js")
+   script(src="ConnectionService.js")
+
+block content
+   ol.breadcrumb
+      li
+         a(href="../login/Login.html")
+            i.fa.fa-home
+            | &nbsp;หน้าหลัก
+      li.active
+         i.fa.fa-database
+         | &nbsp;กำหนดค่าการเชื่อมต่อ
+   .row(ng-app="app.connection")
+      form#frmSetting(role="form", name="frmSetting", ng-controller="ConnectionController")
+         .col-sm-6.col-md-6.col-lg-6
+            .panel.panel-primary
+               .panel-heading
+                  h3.panel-title
+                     i.fa.fa-database
+                     | &nbsp; กำหนดค่าการเชื่อมต่อฐานข้อมุล eInventory
+               .panel-body
+                  .form-group
+                     .row
+                        .col-sm-9.col-md-9.col-lg-9
+                           label(for="txtHost") Server address/name
+                           input#txtHost(type="text", placeholder="127.0.0.1", ng-model="host", ng-required="true").form-control
+                        .col-sm-3.col-md-3.col-lg-3
+                           label(for="txtPort") Port
+                           input#txtPort(type="number", placeholder="3306", ng-model="port", ng-required="true").form-control
+                  .form-group
+                     label(for="txtDbName") Database name
+                     input#txtDbName(type="text", placeholder="ehis", ng-model="dbname", ng-required="true").form-control
+                  .row
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtUserName") Username
+                           input#txtUserName(type="text", placeholder="root", ng-model="username", ng-required="true").form-control
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtPassword") Password
+                           input#txtUserName(type="password", placeholder="", ng-model="password").form-control
+                  .row
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtDCUrl") DC Url
+                           input#txtDCUrl(type="text", placeholder="http://his.mkh.go.th:8081", ng-model="url", ng-required="true").form-control
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtDCPrivateKey") DC Private key
+                           input#txtDCPrivateKey(type="text", placeholder="0123456789", ng-model="private_key", ng-required="true").form-control
+                  .row
+                     .col-sm-12.col-md-12.col-lg-12
+                        small.text-info
+                           i.fa.fa-info
+                           | &nbsp; กำหนดค่าการเชื่อมตอกับฐานข้อมูล Inventory
+         .col-sm-6.col-md-6.col-lg-6(ng-controller="ConnectionController")
+            .panel.panel-primary
+               .panel-heading
+                  h3.panel-title
+                     i.fa.fa-database
+                     | &nbsp; กำหนดค่าการเชื่อมต่อฐาน HOSxP
+               .panel-body
+                  .form-group
+                     .row
+                        .col-sm-9.col-md-9.col-lg-9
+                           label(for="txtHOSHost") Server address/name
+                           input#txtHOSHost(type="text", placeholder="127.0.0.1", ng-model="hosxp_host", ng-required="true").form-control
+                        .col-sm-3.col-md-3.col-lg-3
+                           label(for="txtHOSPort") Port
+                           input#txtHOSPort(type="number", placeholder="3306", ng-model="hosxp_port", ng-required="true").form-control
+                  .form-group
+                     label(for="txtHOSDbName") Database name
+                     input#txtHOSDbName(type="text", placeholder="einv", ng-model="hosxp_dbname", ng-required="true").form-control
+                  .row
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtHOSUserName") Username
+                           input#txtHOSUserName(type="text", placeholder="root", ng-model="hosxp_username", ng-required="true").form-control
+                     .col-sm-6.col-md-6.col-lg-6
+                        .form-group
+                           label(for="txtHOSPassword") Password
+                           input#txtHOSUserName(type="password", placeholder="", ng-model="hosxp_password").form-control
+                  .row
+                     .col-sm-12.col-md-12.col-lg-12
+                        small.text-info
+                           i.fa.fa-info
+                           | &nbsp; กำหนดค่าการเชื่อมตอกับฐานข้อมูล HIS ของหน่วยบริการ (HOSxP, HOSxP_PCU)
+         .row
+            .col-sm-12.col-md-12.col-lg-12.center-x
+               .btn-group
+                  button(type="button", ng-click="saveConnection()", ng-disabled="!frmSetting.$valid").btn.btn-success
+                     i.fa.fa-save
+                     | &nbsp;บันทึกข้อมูล
+                  a(href="../login/Login.html").btn.btn-default
+                     i.fa.fa-home
+                     | &nbsp;ยกเลิก/กลับ

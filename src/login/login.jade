@@ -1,8 +1,8 @@
 extends ../layouts/login
 block scripts
-    script(src="login.js")
-    script(src="loginController.js")
-    script(src="loginService.js")
+    script(src="LoginController.js")
+    script(src="LoginService.js")
+    script(src="Login.js")
 
 block content
     ol.breadcrumb
@@ -10,7 +10,7 @@ block content
             i.fa.fa-sign-in
             | &nbsp; กรุณาระบุชื่อผู้ใช้งาน และ รหัสผ่านของท่าน
     .row(ng-app="app.login")
-        .col-sm-5.col-md-4.col-lg-4.col-sm-offset-4.col-md-offset-4.col-lg-offset-4(ng-controller="MainController")
+        .col-sm-5.col-md-4.col-lg-4.col-sm-offset-4.col-md-offset-4.col-lg-offset-4(ng-controller="LoginController")
             .panel.panel-primary
                 .panel-heading
                     h3.panel-title
@@ -39,7 +39,7 @@ block content
                                 | &nbsp;เข้าใช้งาน
                        .col-sm-6.col-md-6.col-lg-6
                             .btn-group.pull-right
-                                a(href="connectionSetting.html", title="กำหนดค่าการเชื่อมต่อ").btn.btn-default
+                                a(href="../connection/Connection.html", title="กำหนดค่าการเชื่อมต่อ").btn.btn-default
                                     i.fa.fa-cogs
                                 a(href="#", title="ปิดโปรแกรม", ng-click="doExit()").btn.btn-danger
                                     i.fa.fa-power-off

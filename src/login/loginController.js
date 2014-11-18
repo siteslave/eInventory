@@ -1,7 +1,7 @@
 ;(function (window, angular) {
     var App = window.App;
-    angular.module('app.controller.Login', ['app.service.Login'])
-        .controller('MainController', function ($scope, Login) {
+    angular.module('app.login.LoginController', ['app.login.LoginService'])
+        .controller('LoginController', function ($scope, Login) {
             $scope.isFailed = false;
             $scope.doLogin = function () {
                 Login.checkAuth($scope.username, $scope.password)

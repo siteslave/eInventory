@@ -7,12 +7,12 @@
         .config(function ($routeProvider) {
            $routeProvider
                .when('/', {
-                   templateUrl: './partials/main.html',
+                   templateUrl: './partials/Main.html',
                    controller: 'MainController',
                    controllerAs: 'mainCtrl'
                })
                .when('/new', {
-                   templateUrl: './partials/new.html',
+                   templateUrl: './partials/NewOrder.html',
                    controller: 'NewController',
                    controllerAs: 'newCtrl'
                })

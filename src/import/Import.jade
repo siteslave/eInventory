@@ -1,0 +1,36 @@
+extends ../layouts/main
+
+block scripts
+    script(src="Import.js")
+    script(src="HOSxPController.js")
+    script(src="MSKHController.js")
+    script(src="HOSxPService.js")
+    script(src="MSKHService.js")
+
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-database
+            | &nbsp;นำเข้าข้อมูล
+
+    .row(ng-app="app.import")
+        .col-md-3.col-sm-3.col-lg-3
+            ul.list-group
+                li.list-group-item.active
+                    i.fa.fa-fw.fa-home
+                    | เมนูหลัก
+                li.list-group-item
+                    a(href="#/")
+                        i.fa.fa-fw.fa-database
+                        | &nbsp;นำเข้าข้อมูลจาก HOSxP
+                li.list-group-item
+                    a(href="#/mskh")
+                        i.fa.fa-fw.fa-soundcloud
+                        | &nbsp;นำเข้าข้อมูลจาก MSKH
+
+        .col-md-9.col-lg-9.col-sm-9.content-line(ng-view)
+
