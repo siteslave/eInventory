@@ -1,0 +1,74 @@
+ol.breadcrumb
+    li
+        a(href="../pages/Index.html")
+            i.fa.fa-home
+            | &nbsp;หน้าหลัก
+    li
+        a(href="#/")
+            i.fa.fa-database
+            | &nbsp;ข้อมูลยา
+    li.active
+        i.fa.fa-edit
+        | &nbsp;รายละเอียดยา
+
+.alert.alert-danger(ng-show="isError")
+    button(type="button", data-dismiss="alert").close
+        span(aria-hidden="true") &times;
+    | เกิดข้อผิดพลาดในการบันทึกข้อมูล
+.alert.alert-success(ng-show="isSuccess")
+    button(type="button", data-dismiss="alert").close
+        span(aria-hidden="true") &times;
+    | บันทึกข้อมูลเสร็จเรียบร้อยแล้ว
+.well-sm
+    h4
+        i.fa.fa-desktop
+        | &nbsp;ข้อมูลยา ({{drug.name}})
+    table.table.table-striped
+        tbody
+            tr
+                td รหัส
+                td
+                    span.text-muted {{drug.icode}}
+                td ชื่อยา
+                td(colspan="5")
+                    span.text-muted {{drug.name}}
+            tr
+                td หน่วย
+                td
+                    span.text-muted {{drug.units}}
+                td ความแรง
+                td
+                    span.text-muted {{drug.strength}}
+                td ราคาทุน
+                td
+                    span.text-muted {{drug.cost}}
+                td ราคาขาย
+                td
+                    span.text-muted {{drug.price}}
+            tr
+                td จุดเบิก
+                td
+                    span.text-muted {{drug.min_qty}}
+                td บัญชี
+                td
+                    span.text-muted {{drug.drugaccount}}
+                td รหัสมาตรฐาน
+                td(colspan="5")
+                    span.text-muted {{drug.did}}
+
+br
+
+.well-sm
+    legend
+        i.fa.fa-edit
+        | แก้ไขข้อมูลเบื้องต้น
+
+    form(role="form", name="frmUpdate").form-horizontal
+        .row
+            .col-sm-3.col-md-3.col-lg-3
+                lable จำนวนคงเหลือขั้นต่ำ (จุดเบิก)
+                .input-group
+                    input(type="number", ng-model="drug.min_qty", ng-required="true").form-control
+                    span.input-group-btn
+                        button(type="button", ng-click="doUpdate()", ng-disabled="frmUpdate.$invalid").btn.btn-success
+                            i.fa.fa-save

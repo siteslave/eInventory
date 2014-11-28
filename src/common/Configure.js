@@ -23,6 +23,12 @@
                        client: 'mysql',
                        connection: config.db
                    });
+               },
+               getHOSxPConnection: function () {
+                   return require('knex')({
+                       client: 'mysql',
+                       connection: config.hosxp
+                   });
                }
            };
 

@@ -1,64 +1,69 @@
 .panel.with-nav-tabs.panel-primary
     .panel-heading
         ul.nav.nav-tabs
-            li.active
-                a(href="#tab1", data-toggle="tab")
+            li(ng-class="{'active': tab == 0}")
+                a(href="#", data-toggle="tab", ng-click="setTab(0)")
                     i.fa.fa-fw.fa-th-list
-                    | &nbsp;นำเข้าข้อมูล&nbsp;
-            li
-                a(href="#tab2", data-toggle="tab")
+                    | &nbsp;นำเข้าข้อมูลจ่ายยา&nbsp;
+            li(ng-class="{'active': tab == 1}")
+                a(href="#", data-toggle="tab", ng-click="setTab(1)")
+                    i.fa.fa-fw.fa-eyedropper
+                    | &nbsp;นำเข้าข้อมูลยา&nbsp;
+            li(ng-class="{'active': tab == 2}")
+                a(href="#", data-toggle="tab", ng-click="setTab(2)")
+                    i.fa.fa-fw.fa-shopping-cart
+                    | &nbsp;นำเข้าสิทธิ์การรักษา&nbsp;
+            li(ng-class="{'active': tab == 3}")
+                a(href="#", data-toggle="tab", ng-click="setTab(3)")
                     i.fa.fa-fw.fa-calendar-o
-                    | &nbsp;ประวัติการนำเข้า&nbsp;
+                    | &nbsp;ประวัติ&nbsp;
     .panel-body
         .tab-content
-            .tab-pane.fade.in.active#tab1
+            .tab-pane.fade.in(ng-class="{'active': tab == 0}")
                 .row
-                    .col-md-6.col-lg-6.col-sm-6
-                        .input-group
-                            input(type="text", placeholder="ระบุเลขที่ใบเบิก เพื่อค้นหา").form-control.input-sm
-                            span.input-group-btn
-                                button(type="button").btn.btn-default.btn-sm
-                                    i.fa.fa-search
-                                    | &nbsp;ค้นหา
-                    .col-md-6.col-lg-6.col-sm-6
-                        .btn-group.pull-right
-                            button(type="button").btn.btn-default.btn-sm
-                                i.fa.fa-refresh
-                                | &nbsp;ทั้งหมด
-                            button(type="button").btn.btn-success.btn-sm
-                                i.fa.fa-check-square
-                                | &nbsp;อนุมัติ
-                            button(type="button").btn.btn-danger.btn-sm
-                                i.fa.fa-remove
-                                | &nbsp;ยกเลิก
+                    .col-md-12.col-lg-12.col-sm-12
+                        form.form-inline(role="form", name="frmImportPayment")
+                            .well.well-sm
 
-                //table order history
-                table.table.table-striped
-                    thead
-                        tr
-                            th เลขที่
-                            th วันที่
-                            th เบิกจาก
-                            th จำนวน
-                            th ราคา
-                            th #
-                    tbody
-                        tr
-                            td(colspan="6") ...
-                nav
-                    ul.pagination.pagination-sm
-                        li.disabled
-                            a(href="#") &laquo;
-                        li.active
-                            a(href="#") 1
-                                span.sr-only (current)
-                        li
-                            a(href="#") 2
-                        li
-                            a(href="#") 3
-                        li
-                            a(href="#") 4
-                        li
-                            a(href="#") 5
-                        li
-                            a(href="#") &raquo;
+                                label ตั้งแต่ &nbsp;
+                                input(type="date", style="width: 150px;", placeholder="วว/ดด/ปปปป", ng-model="startDate", ng-required="true").form-control
+                                label &nbsp;ถึง&nbsp;
+                                input(type="date", style="width: 150px;", placeholder="วว/ดด/ปปปป", ng-model="endDate", ng-required="true").form-control
+                                | &nbsp;
+                                button(type="button", ng-click="doImportPayment()", ng-disabled="frmImportPayment.$invalid").btn.btn-primary
+                                    i.fa.fa-refresh
+                                    | &nbsp;นำเข้าข้อมูล
+                                | &nbsp; |  &nbsp; [{{currentImportPayment | number}} of {{totalPayment | number}}]
+
+                        p สถานะนำเข้า
+                        my-progressbar-payment
+
+
+            .tab-pane.fade.in(ng-class="{'active': tab == 1}")
+
+                blockquote
+                    | ระบบจะทำการนำเพิ่ม/ปรับปรุงข้อมูลรายการยาในสต๊อกให้ตรงกับของ HOSxP โดยไม่มีการลบรายการเก่าทิ้ง (แค่ทำการปรับปรุง)
+                    | คุณแน่ใจที่จะนำเข้าฐานข้อมูลยา จากตาราง HOSxP ใช่หรือไม่? &nbsp;
+
+                .row
+                    .col-sm-6.col-md-6.col-lg-6
+                        button(type="button", ng-click="doImportDrug()").btn.btn-success
+                            i.fa.fa-refresh
+                            | &nbsp;ใช่ ฉันต้องการนำเข้าข้อมูล
+                        | &nbsp; |  &nbsp; [{{currentImportDrug | number}} of {{totalDrug | number}}]
+                    .col-sm-6.col-md-6.col-lg-6
+                        my-progressbar
+            .tab-pane.fade.in(ng-class="{'active': tab == 2}")
+                blockquote
+                    i.fa.fa-info-circle
+                    | &nbsp;นำเข้าข้อมูลสิทธิการรักษา เพื่อใช้ประกอบการจัดทำรายงาน
+                .row
+                    .col-sm-5.col-md-5.col-lg-5
+                        button(type="button", ng-click="doImportRight()").btn.btn-success
+                            i.fa.fa-refresh
+                            | &nbsp;นำเข้าข้อมูล
+                        | &nbsp; |  &nbsp; [{{currentImportRight | number}} of {{totalRight | number}}]
+                    .col-sm-7.col-md-7.col-lg-7
+                        my-progressbar-pttype
+            .tab-pane.fade.in(ng-class="{'active': tab == 3}")
+                | Hello

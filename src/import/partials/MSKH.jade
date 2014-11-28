@@ -1,1 +1,54 @@
-| MSKH
+.panel.with-nav-tabs.panel-primary
+    .panel-heading
+        ul.nav.nav-tabs
+            li(ng-class="{'active': tab == 0}")
+                a(href="#/mskh", data-toggle="tab", ng-click="setTab(0)")
+                    i.fa.fa-fw.fa-th-list
+                    | &nbsp;นำเข้าข้อมูลจากใบเบิก&nbsp;
+            li(ng-class="{'active': tab == 1}")
+                a(href="#/mskh", data-toggle="tab", ng-click="setTab(1)")
+                    i.fa.fa-fw.fa-th-list
+                    | &nbsp;นำเข้ารหัสโรงพยาบาล&nbsp;
+    .panel-body
+        .tab-content
+            .tab-pane.fade.in(ng-class="{'active': tab == 0}")
+                .row
+                    .col-md-7.col-sm-7.col-lg-7
+                        .btn-group
+                            button(type="button").btn.btn-default
+                                i.fa.fa-refresh
+                                | &nbsp; ทั้งหมด
+                            button(type="button").btn.btn-primary
+                                i.fa.fa-check-square
+                                | &nbsp; ยังไม่นำเข้า
+                    .col-md-5.col-sm-5.col-lg-5
+                        .input-group.pull-right
+                            input(type="text", placeholder="ระบุเลขที่ใบเบิก").form-control
+                            span.input-group-btn
+                                button(type="button").btn.btn-primary
+                                    i.fa.fa-search
+
+
+                table.table.table-hover
+                    thead
+                        tr
+                            th #
+                            th วันที่
+                            th เลขที่ใบเบิก
+                            th จำนวน
+                            th &nbsp;
+                    tbody
+                        tr
+                            td(colspan="5") ...
+
+
+            .tab-pane.fade.in(ng-class="{'active': tab == 1}")
+
+                .row
+                    .col-sm-4.col-md-4.col-lg-4
+                        button(type="button", ng-click="doImportStanddardCode()").btn.btn-success
+                            i.fa.fa-refresh
+                            | &nbsp;นำเข้าข้อมูล
+                        | &nbsp; |  &nbsp; [0/0]
+                    .col-sm-8.col-md-8.col-lg-8
+                        my-progressbar-standdard-code

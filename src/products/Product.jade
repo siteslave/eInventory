@@ -1,0 +1,11 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Product.js")
+    script(src="MainController.js")
+    script(src="MainService.js")
+    script(src="DetailController.js")
+    script(src="DetailService.js")
+
+block content
+    div(ng-app="app.products.Product", ng-view)

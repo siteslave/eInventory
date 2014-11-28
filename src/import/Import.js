@@ -11,13 +11,11 @@
             $routeProvider
                 .when('/', {
                     templateUrl: './partials/HOSxP.html',
-                    controller: 'HOSxPController',
-                    controllerAs: 'hos'
+                    controller: 'HOSxPController'
                 })
                 .when('/mskh', {
                     templateUrl: './partials/MSKH.html',
-                    controller: 'MSKHController',
-                    controllerAs: 'mskh'
+                    controller: 'MSKHController'
                 })
                 .otherwise({
                     redirectTo: '/'
