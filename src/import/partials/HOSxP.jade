@@ -20,6 +20,9 @@
     .panel-body
         .tab-content
             .tab-pane.fade.in(ng-class="{'active': tab == 0}")
+                blockquote
+                    i.fa.fa-info-circle
+                    | &nbsp;กรุณาระบุช่วงเวลาที่ต้องการนำเข้าข้อมูลการจ่ายยาและเวชภัณฑ์ หากเคยนำเข้าแล้วโปรแกรมจะทำการปรับปรุงรายการให้ใหม่ทั้งหมด
                 .row
                     .col-md-12.col-lg-12.col-sm-12
                         form.form-inline(role="form", name="frmImportPayment")
@@ -31,9 +34,11 @@
                                 input(type="date", style="width: 150px;", placeholder="วว/ดด/ปปปป", ng-model="endDate", ng-required="true").form-control
                                 | &nbsp;
                                 button(type="button", ng-click="doImportPayment()", ng-disabled="frmImportPayment.$invalid").btn.btn-primary
-                                    i.fa.fa-refresh
+                                    i.fa.fa-save
                                     | &nbsp;นำเข้าข้อมูล
+
                                 | &nbsp; |  &nbsp; [{{currentImportPayment | number}} of {{totalPayment | number}}]
+                                span(ng-hide="paymentIsImported").text-muted &nbsp;Wating...
 
                         p สถานะนำเข้า
                         my-progressbar-payment

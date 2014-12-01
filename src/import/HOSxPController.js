@@ -30,6 +30,8 @@
             $scope.currentImportRight = 0;
             $scope.importedRightPercent = '0%';
 
+            $scope.paymentIsImported = true;
+
             $scope.doImportRight = function () {
                 $scope.totalRight = 0;
                 $scope.currentImportRight = 0;
@@ -114,6 +116,8 @@
                 var startDate = moment($scope.startDate).format('YYYY-MM-DD'),
                     endDate = moment($scope.endDate).format('YYYY-MM-DD');
 
+                $scope.paymentIsImported = false;
+
                 $scope.payments = 0;
                 $scope.totalPayment = 0;
                 $scope.currentImportPayment = 0;
@@ -121,22 +125,23 @@
 
                 HOSxPService.getHOSxPDrugPayment(startDate, endDate)
                     .then(function (rows) {
+                        $scope.paymentIsImported = true;
                         $scope.totalPayment = _.size(rows);
                         $scope.payments = rows;
 
                         // remove old data
-                        return HOSxPService.removeDrugPayment(startDate, endDate);
-                    })
-                    .then(function () {
-                        _.forEach($scope.payments, function (v) {
-                           HOSxPService.importDrugPayment(v)
-                               .then(function() {
-                                   $scope.currentImportPayment++;
-                                   $scope.importedPaymentPercent = Math.floor(($scope.currentImportPayment * 100) / $scope.totalPayment)+'%';
-                               }, function (err) {
-                                   console.log(err);
-                               });
+                        // return HOSxPService.removeDrugPayment(startDate, endDate);
+
+                        _.forEach(rows, function (v) {
+                            HOSxPService.importDrugPayment(v)
+                                .then(function() {
+                                    $scope.currentImportPayment++;
+                                    $scope.importedPaymentPercent = Math.floor(($scope.currentImportPayment * 100) / $scope.totalPayment)+'%';
+                                }, function (err) {
+                                    console.log(err);
+                                });
                         });
+
                     }, function (err) {
                         console.log(err);
                         alert('Error [Import payment]: Please see error in console');

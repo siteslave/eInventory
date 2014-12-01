@@ -19,7 +19,7 @@
     "fullscreen": false
   },
   "webkit": {
-    "plugin": false,
+    "plugin": true,
     "java": false,
     "page-cache": true
   },

@@ -13,7 +13,7 @@
                     var oldDate = moment(date),
                         thaiYear = parseInt(oldDate.get('year')) + 543;
 
-                    return oldDate.get('date') + '/' + oldDate.get('month') + '/' + thaiYear;
+                    return oldDate.get('date') + '/' + (oldDate.get('month')+1) + '/' + thaiYear;
                 }
             };
         })

@@ -1,0 +1,76 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Calendar.js")
+    script(src="MainController.js")
+    script(src="MainService.js")
+
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-calendar-o
+            | &nbsp;กำหนดค่าปีงบประมาณ
+
+    .row(ng-app="app.calendar.Calendar", ng-controller="MainController")
+        .col-sm-6.col-md-6.col-lg-6
+
+            .panel.with-nav-tabs.panel-primary
+                .panel-heading
+                    ul.nav.nav-tabs
+                        li.active
+                            a(href="#")
+                                i.fa.fa-fw.fa-calendar
+                                | &nbsp;กำหนดค่าปีงบประมาณ
+                .panel-body
+                    .tab-content
+                        .tab-pane.fade.in.active
+                            table.table.table-striped
+                                thead
+                                    tr
+                                        th ปีงบประมาณ
+                                        th ตั้งแต่
+                                        th ถึง
+                                        th #
+                                tbody
+                                    tr(ng-repeat="p in peroid")
+                                        td.text-center
+                                            strong {{p.name}}
+                                        td.text-center {{p.start_date | toThaiDate}}
+                                        td.text-center {{p.end_date | toThaiDate}}
+                                        td
+                                            button(type="button", ng-click="setEdit(p.name, p.start_date, p.end_date)").btn.btn-primary
+                                                i.fa.fa-edit
+
+        .col-sm-4.col-md-4.col-lg-4(ng-show="showEdit")
+            .panel.with-nav-tabs.panel-primary
+                .panel-heading
+                    ul.nav.nav-tabs
+                        li.active
+                            a(href="#")
+                                i.fa.fa-fw.fa-edit
+                                | &nbsp;ปรับปรุงข้อมูล
+                .panel-body
+                    .tab-content
+                        .tab-pane.fade.in.active
+                            form(role="form", name="frmEdit").form.form-horizontal
+                                legend
+                                    i.fa.fa-edit
+                                    | &nbsp;ปรับปรุงข้อมูล
+                                label ปีงบประมาณ
+                                input(type="text", ng-model="name", ng-required="true", disabled).form-control.disabled
+                                label ตั้งแต่
+                                input(type="date", ng-model="startDate", ng-required="true").form-control
+                                label ถึง
+                                input(type="date", ng-model="endDate", ng-required="true").form-control
+                                br
+                                .btn-group
+                                    button(type="button", ng-click="savePeriod()", ng-disabled="frmEdit.$invalid").btn.btn-success
+                                        i.fa.fa-save
+                                        | &nbsp;ปรับปรุงข้อมูล
+                                    button(type="button", ng-click="closeEdit()").btn.btn-default
+                                        i.fa.fa-remove
+                                        | &nbsp;ยกเลิก/ซ่อน

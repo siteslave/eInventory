@@ -23,13 +23,17 @@ block content
                               span(aria-hidden="true") &times;
                               span.sr-only Close
                           | ชื่อผู้ใช้งาน/รหัสผ่าน ไม่ถูกต้อง
+                       .form-group
+                           label ปีงบประมาณ
+                           select(ng-model="period", ng-require="true").form-control
+                               option(ng-repeat="p in periods", value="{{p.name}}") ปีงบประมาณ {{p.name}}
 
-                        .form-group
-                           label(for="txtUsername") ชื่อผู้ใช้งาน
-                           input#txtHost(type="text", ng-model="username", ng-required="true").form-control
-                        .form-group
-                           label(for="txtPassword") รหัสผ่าน
-                           input#txtPassword(type="password", ng-model="password", ng-required="true").form-control
+                       .form-group
+                          label(for="txtUsername") ชื่อผู้ใช้งาน
+                          input#txtHost(type="text", ng-model="username", ng-required="true").form-control
+                       .form-group
+                          label(for="txtPassword") รหัสผ่าน
+                          input#txtPassword(type="password", ng-model="password", ng-required="true").form-control
 
                 .panel-footer
                    .row

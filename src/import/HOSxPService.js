@@ -98,7 +98,7 @@
                      where rxdate between "2014-01-01" and "2014-01-30"
                      */
                     dbHOSxP('opitemrece as o')
-                        .select('o.icode', 'o.hn', 'o.vn', 'o.an', 'o.qty',
+                        .select('o.hos_guid as guid', 'o.icode', 'o.hn', 'o.vn', 'o.an', 'o.qty',
                             'd.unitcost as cost', 'pttype', 'd.unitprice as price', 'o.vstdate', 'o.rxdate')
                         .innerJoin('drugitems as d', 'd.icode', 'o.icode')
                         .whereBetween('o.rxdate', [startDate, endDate])
@@ -112,22 +112,36 @@
 
                     return q.promise;
                 },
-
-                importDrugPayment: function (drug) {
+                importDrugPayment: function (v) {
                     var q = $q.defer();
 
-                    db('stc_payments')
-                        .insert(drug)
+                    db.raw('insert into stc_payments set guid=?, icode=?, hn=?, vn=?, an=?, qty=?, cost=?, price=?, vstdate=?, rxdate=?, pttype=? ON DUPLICATE KEY UPDATE qty=?, price=?, cost=?', [v.guid, v.icode, v.hn, v.vn, v.an, v.qty, v.cost, v.price, v.vstdate, v.rxdate, v.pttype, v.qty, v.price, v.cost])
                         .exec(function (err) {
                             if (err) {
                                 q.reject(err);
                             } else {
                                 q.resolve();
                             }
-                        });
+                    });
 
                     return q.promise;
                 },
+                //
+                //importDrugPayment: function (drug) {
+                //    var q = $q.defer();
+                //
+                //    db('stc_payments')
+                //        .insert(drug)
+                //        .exec(function (err) {
+                //            if (err) {
+                //                q.reject(err);
+                //            } else {
+                //                q.resolve();
+                //            }
+                //        });
+                //
+                //    return q.promise;
+                //},
 
                 removeDrugPayment: function (startDate, endDate) {
                     var q = $q.defer();
@@ -140,6 +154,28 @@
                                 q.reject(err);
                             } else {
                                 q.resolve();
+                            }
+                        });
+
+                    return q.promise;
+                },
+
+
+
+                checkDuplicatedPayment: function (v) {
+                    var q = $q.defer();
+
+                    db('stc_payments')
+                        .where('icode', v.icode)
+                        .where('vn', v.vn)
+                        .count('* as total')
+                        .exec(function (err, rows) {
+                            if (err) {
+                                console.log(err);
+                                q.resolve(false);
+                            } else {
+                                var total = rows[0].total || 0;
+                                return q.resolve(total);
                             }
                         });
 

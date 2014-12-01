@@ -25,7 +25,7 @@
                         $scope.isError = true;
                         $scope.isSuccess = false;
                         console.log(err);
-                    })
+                    });
             };
         });
 

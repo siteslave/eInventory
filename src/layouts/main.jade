@@ -44,18 +44,23 @@ html(lang="en")
                                 a(href="../products/Product.html")
                                     i.fa.fa-fw.fa-shopping-cart
                                     | &nbsp;ทะเบียนยาและเวชภัณฑ์
-                            li
-                                a(href="users.html")
+                            li.disabled
+                                a(href="#")
                                     i.fa.fa-fw.fa-users
                                     | &nbsp;ทะเบียนผู้ใช้งาน
-                            li
-                                a(href="suppliers.html")
+                            li.disabled
+                                a(href="#")
                                     i.fa.fa-fw.fa-user-md
                                     | &nbsp;เจ้าหน้าที่
-                            li
-                                a(href="suppliers.html")
+                            li.disabled
+                                a(href="#")
                                     i.fa.fa-fw.fa-database
                                     | &nbsp;คลังหลัก
+                            li.divider
+                            li
+                                a(href="../calendar/Calendar.html")
+                                    i.fa.fa-fw.fa-calendar
+                                    | &nbsp;กำหนดปีงบประมาณ
                     li.dropdown
                         a(href="#", data-toggle="dropdown").dropdown-toggle
                             i.fa.fa-fw.fa-print &nbsp;
@@ -117,5 +122,6 @@ html(lang="en")
         // Main application script
         script(src="../app.js")
         script(src="../common/Configure.js")
+        script(src="../common/Filter.js")
         // Application scripts
         block scripts
