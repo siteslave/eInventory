@@ -11,10 +11,12 @@ html(lang="en")
         link(href="../../vendor/font-awesome/css/font-awesome.min.css", rel="stylesheet")
         link(href="../../vendor/select2/select2.css", rel="stylesheet")
         link(href="../../vendor/select2/select2-bootstrap.css", rel="stylesheet")
+        link(href="../../vendor/sweetalert/lib/sweet-alert.css", rel="stylesheet")
         link(href="../css/app.css", rel="stylesheet")
+            
 
     body
-        nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+        nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
             .container-fluid
                 button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#bs-navbar-collapse")
                     span.sr-only Toggle navigation
@@ -52,10 +54,10 @@ html(lang="en")
                                 a(href="#")
                                     i.fa.fa-fw.fa-user-md
                                     | &nbsp;เจ้าหน้าที่
-                            li.disabled
-                                a(href="#")
+                            li
+                                a(href="../stock/Stock.html")
                                     i.fa.fa-fw.fa-database
-                                    | &nbsp;คลังหลัก
+                                    | &nbsp;คลังยาหลัก
                             li.divider
                             li
                                 a(href="../calendar/Calendar.html")
@@ -68,13 +70,9 @@ html(lang="en")
                             span.caret
                         ul.dropdown-menu(role="menu")
                             li
-                                a(href="settings.html")
-                                    i.fa.fa-fw.fa-gear
+                                a(href="../card/Card.html")
+                                    i.fa.fa-fw.fa-calendar-o
                                     | &nbsp;Stock Card
-                            li
-                                a(href="users.html")
-                                    i.fa.fa-fw.fa-user
-                                    | &nbsp;รายการคงเหลือ
                     li.dropdown
                         a(href="#", data-toggle="dropdown").dropdown-toggle
                             i.fa.fa-fw.fa-wrench &nbsp;
@@ -86,7 +84,7 @@ html(lang="en")
                                     i.fa.fa-fw.fa-database
                                     | &nbsp;นำเข้าข้อมูล
                             li
-                                a(href="users.html")
+                                a(href="../clearance/Clearance.html")
                                     i.fa.fa-fw.fa-filter
                                     | &nbsp;ตัด Stock
 
@@ -115,10 +113,11 @@ html(lang="en")
         script(src="../../vendor/select2/select2.min.js")
         script(src="../../vendor/select2/select2_locale_th.js")
         // angularjs
-        script(src="../../vendor/angular/angular.min.js")
-        script(src="../../vendor/angular-route/angular-route.min.js")
+        script(src="../../vendor/angular/angular.js")
+        script(src="../../vendor/angular-route/angular-route.js")
         script(src="../../vendor/angular-ui-select2/src/select2.js")
         script(src="../../vendor/angular-i18n/angular-locale_th-th.js")
+        script(src="../../vendor/sweetalert/lib/sweet-alert.min.js")
         // Main application script
         script(src="../app.js")
         script(src="../common/Configure.js")

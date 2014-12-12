@@ -1,0 +1,77 @@
+.panel.with-nav-tabs.panel-primary
+    .panel-heading
+        ul.nav.nav-tabs
+            li.active
+                a(href="#/new", data-toggle="tab")
+                    i.fa.fa-shopping-cart
+                        | &nbsp;บันทึกใบเบิกเวชภัณฑ์
+    .panel-body
+        .tab-content
+            .tab-pane.fade.in.active
+
+                form(role="form").form-inline
+                    label เลขที่ &nbsp;
+                    input(type="text", ng-model="orderCode", placeholder="เลขที่ใบเบิก").form-control.input-sm
+                    label &nbsp;วันที่&nbsp;
+                    input(type="date", style="width: 130px;", ng-model="orderDate").form-control.input-sm
+                    label &nbsp;คลัง&nbsp;
+                    select.form-control.input-sm(ng-model="supplier", style="width: 270px;", ui-select2="select2Options")
+                        option(ng-repeat="s in suppliers", value="{{s.code}}") [{{s.code}}] {{s.name}}
+                table.table.table
+                    thead
+                        tr
+                            th #
+                            //- th รหัส
+                            th รายการ
+                            th ราคา
+                            th จำนวน
+                            th หน่วย
+                            th รวม
+                            th #
+                    tbody
+                        tr(ng-repeat="i in items | orderBy: 'name'")
+                            td.text-center {{$index+1}}
+                            //- td.text-center {{i.icode}}
+                            td {{i.name}}
+                            td.text-right {{i.price | number}}
+                            td.text-right {{i.qty | number}}
+                            td.text-center {{i.unit}}
+                            td.text-right {{i.qty*i.price | number}}
+                            td 
+                                button(type="button", ng-click="removeItem(i.icode)").btn.btn-sm.btn-default
+                                    i.fa.fa-remove
+                        tr
+                            td(colspan="5").text-right
+                                strong
+                                    | รวม
+                            td.text-right
+                                strong
+                                    | {{getTotalPrice() | number}}
+                            td &nbsp;
+                        tr
+                            td
+                                button(type="button", ng-click="toggleAdd()").btn.btn-success.btn-sm
+                                    i.fa.fa-plus
+                            td(ng-show="isAdd") 
+                                select(ng-model="drug", ui-select2="select2Options", style="width: 230px;", ng-change="getProductDetail()").form-control.input-sm
+                                    option(ng-repeat="d in drugs", value="{{d.icode}}") {{d.name}}
+                            td(ng-show="isAdd")
+                                input(type="number", ng-required="true", style="width: 70px;", ng-model="itemPrice").form-control.input-sm
+                            td(ng-show="isAdd", colspan="2")
+                                input(type="number", ng-required="true", style="width: 60px;", ng-model="itemQty").form-control.input-sm
+                            td(ng-show="isAdd")
+                                input(ng-required="true", style="width: 60px;", ng-disabled="true", value="{{itemQty * itemPrice | number}}").form-control.input-sm
+                            td(ng-show="isAdd")
+                                .btn-group
+                                    button(type="button", ng-click="addProduct()").btn.btn-sm.btn-success
+                                        i.fa.fa-save
+                                    button(type="button").btn.btn-sm.btn-default
+                                        i.fa.fa-remove
+
+                .btn-group.pull-right
+                    button(type="button", ng-click="saveOrder()").btn.btn-primary.btn-sm
+                        i.fa.fa-save
+                        | &nbsp;บันทึก
+                    button(type="button", ng-click="clearOrder()").btn.btn-default.btn-sm
+                        i.fa.fa-trash
+                        | &nbsp;ยกเลิก

@@ -126,22 +126,42 @@
 
                     return q.promise;
                 },
-                //
-                //importDrugPayment: function (drug) {
-                //    var q = $q.defer();
-                //
-                //    db('stc_payments')
-                //        .insert(drug)
-                //        .exec(function (err) {
-                //            if (err) {
-                //                q.reject(err);
-                //            } else {
-                //                q.resolve();
-                //            }
-                //        });
-                //
-                //    return q.promise;
-                //},
+
+                savePaymentLog: function (startDate, endDate) {
+                    var q = $q.defer();
+
+                    db('stc_payments_log')
+                        .insert({
+                            start_date: startDate,
+                            end_date: endDate
+                        })
+                        .exec(function (err) {
+                            if (err) q.reject(err);
+                            else q.resolve();
+                        });
+
+                    return q.promise;
+                },
+
+                checkDuplicatedPaymentLog: function (startDate, endDate) {
+                    var q = $q.defer();
+
+                    db('stc_payments_log')
+                        .where('start_date', startDate)
+                        .where('end_date', endDate)
+                        .count('* as total')
+                        .exec(function (err, rows) {
+                            if (err) {
+                                console.log(err);
+                                q.resolve(false);
+                            } else {
+                                var total = rows[0].total || 0;
+                                return q.resolve(total);
+                            }
+                        });
+
+                    return q.promise;
+                },
 
                 removeDrugPayment: function (startDate, endDate) {
                     var q = $q.defer();
@@ -159,8 +179,6 @@
 
                     return q.promise;
                 },
-
-
 
                 checkDuplicatedPayment: function (v) {
                     var q = $q.defer();

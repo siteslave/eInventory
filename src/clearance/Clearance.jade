@@ -1,0 +1,34 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Clearance.js")
+    script(src="OrderController.js")
+    script(src="OrderService.js")
+    script(src="PaymentController.js")
+    script(src="PaymentService.js")
+
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-filter
+            | &nbsp;ตัดสต๊อก
+    .row(ng-app="app.clearance.Clearance")
+        .col-md-3.col-sm-3.col-lg-3
+            ul.list-group
+                li.list-group-item.active
+                    i.fa.fa-fw.fa-home
+                    | เมนูหลัก
+                li.list-group-item
+                    a(href="#/")
+                        i.fa.fa-fw.fa-edit
+                        | &nbsp;ตัดสต๊อกจากใบเบิก
+                li.list-group-item
+                    a(href="#/payment")
+                        i.fa.fa-fw.fa-list-alt
+                        | &nbsp;ตัดสต๊อกจากรายการจ่าย
+
+        .col-md-9.col-lg-9.col-sm-9.content-line(ng-view)

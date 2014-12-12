@@ -1,0 +1,63 @@
+﻿extends ../layouts/Main
+
+block scripts
+    script(src="Card.js")
+    script(src="MainController.js")
+    Script(src="MainService.js")
+
+block content
+
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-database
+            | &nbsp;Stock card
+
+    .row(ng-app="app.card.Card", ng-controller="MainController")
+        .col-lg-12.col-md-12.col-sm-12
+            form(role="form", name="frmFilter").form-inline.well-sm
+                label ตั้งแต่ &nbsp;
+                input(type="date", style="width: 150px;", ng-model="startDate", ng-required="true").form-control
+                label &nbsp; ถึง &nbsp;
+                input(type="date", style="width: 150px;", ng-model="endDate", ng-required="true").form-control
+
+                label &nbsp; รายการยา &nbsp;
+                select#slDrug.form-control(style="width: 350px;", ng-model="drug", ng-required="true", ui-select2="select2Options")
+                    option(ng-repeat="d in drugs", value="{{d.icode}}") {{d.name}}
+                | &nbsp;
+                button(type="button", ng-disabled="frmFilter.$invalid", ng-click="doFilter()").btn.btn-primary.btn-sm
+                    i.fa.fa-search
+                    | &nbsp;แสดง
+            br
+
+            table.table.table-striped
+                thead
+                    tr
+                        th #
+                        th วันที่
+                        th เลขที่อ้างอิง
+                        th รายการ
+                        th รับ
+                        th จ่าย
+                        th คงเหลือ
+                tbody
+                    tr(ng-repeat="c in cards", ng-class="{'success': c.is_get, 'danger': c.current_total < 0}")
+                        td.text-center {{$index+1}}
+                        td.text-center {{c.cdate | toThaiDate}}
+                        td.text-center {{c.ccode}}
+                        td {{c.cname}}
+                        td.text-right {{c.qty_in | number}}
+                        td.text-right {{c.qty_out | number}}
+                        td.text-right {{c.current_total | number}}
+                    tr.success
+                        td(colspan="4").text-right 
+                            strong รวม
+                        td.text-right.text-success 
+                            strong {{totalQtyIn | number}}
+                        td.text-right.text-danger 
+                            strong {{totalQtyOut | number}}
+                        td.text-right.text-info
+                            strong {{totalQty | number}}

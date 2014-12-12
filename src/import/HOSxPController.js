@@ -123,14 +123,38 @@
                 $scope.currentImportPayment = 0;
                 $scope.importedPaymentPercent = '0%';
 
+                // check duplicated log
+                var promise = HOSxPService.checkDuplicatedPaymentLog(startDate, endDate);
+                promise.then(function (isDuplicated) {
+                    if (isDuplicated) {
+                        if (confirm('รายการนี้เคยถูกนำเข้าระบบแล้ว ต้องการนำเข้าใหม่หรือไม่?')) {
+                            importPayment(startDate, endDate);
+                        } else {
+                            $scope.paymentIsImported = true;
+                        }
+                    } else {
+                        HOSxPService.savePaymentLog(startDate, endDate)
+                            .then(function () {
+                                importPayment(startDate, endDate);
+                            }, function (err) {
+                                console.log('[Insert log]: ' + err);
+                                alert('Error [Insert log]: Please see error in console');
+                            });
+                    }
+                }, function (err) {
+                    console.log(err);
+                    alert('Error: View console to see log');
+                });
+
+            };
+
+            var importPayment = function (startDate ,endDate) {
+
                 HOSxPService.getHOSxPDrugPayment(startDate, endDate)
                     .then(function (rows) {
                         $scope.paymentIsImported = true;
                         $scope.totalPayment = _.size(rows);
                         $scope.payments = rows;
-
-                        // remove old data
-                        // return HOSxPService.removeDrugPayment(startDate, endDate);
 
                         _.forEach(rows, function (v) {
                             HOSxPService.importDrugPayment(v)

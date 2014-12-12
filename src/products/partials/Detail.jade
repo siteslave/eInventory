@@ -66,9 +66,11 @@ br
     form(role="form", name="frmUpdate").form-horizontal
         .row
             .col-sm-3.col-md-3.col-lg-3
-                lable จำนวนคงเหลือขั้นต่ำ (จุดเบิก)
-                .input-group
-                    input(type="number", ng-model="drug.min_qty", ng-required="true").form-control
-                    span.input-group-btn
-                        button(type="button", ng-click="doUpdate()", ng-disabled="frmUpdate.$invalid").btn.btn-success
-                            i.fa.fa-save
+                label จำนวนคงเหลือขั้นต่ำ (จุดเบิก)
+                input(type="number", ng-model="drug.min_qty", ng-required="true").form-control
+                label รหัส MSHK (รหัสยาโรงพยาบาลมหาสารคาม)
+                input(type="text", ng-model="drug.mskh_code", ng-required="true").form-control
+                br
+                button(type="button", ng-click="doUpdate()", ng-disabled="frmUpdate.$invalid").btn.btn-success
+                    i.fa.fa-save
+                    | &nbsp;บันทึก

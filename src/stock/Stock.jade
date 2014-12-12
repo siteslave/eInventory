@@ -1,0 +1,65 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Stock.js")
+    script(src="MainController.js")
+    script(src="MainService.js")
+
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-database
+            | &nbsp;คลังหลัก
+
+    .row(ng-app="app.stock.Stock", ng-controller="MainController")
+        .col-lg-7.col-md-7.col-sm-7    
+            .panel.with-nav-tabs.panel-primary
+                .panel-heading
+                    ul.nav.nav-tabs
+                        li(ng-class="{'active': tab == 0}")
+                            a(href="#tab0", data-toggle="tab", ng-click="setTab(0)")
+                                i.fa.fa-fw.fa-th
+                                | &nbsp;รายการคลังหลัก
+                        li(ng-class="{'active': tab == 1}")
+                            a(href="#tab1", data-toggle="tab", ng-click="setTab(1)")
+                                i.fa.fa-plus-circle
+                                | &nbsp;เพิ่มรายการ
+                .panel-body
+                    .tab-content
+                        .tab-pane.fade.in.active#tab0(ng-class="{'active': tab == 0}")
+                            table.table.table-striped
+                                thead
+                                    tr
+                                        th #        
+                                        th ชื่อคลังหลัก
+                                        th
+                                tbody
+                                    tr(ng-repeat="s in stocks")
+                                        td.text-center {{s.code}}
+                                        td {{s.name}}
+                                        td.text-center
+                                            .btn-group
+                                                button(type="button", ng-click="setEdit(s.id, s.code, s.name)").btn.btn-default
+                                                    i.fa.fa-edit
+                                                button(type="button", ng-click="doRemove(s.id)").btn.btn-danger
+                                                    i.fa.fa-remove
+    
+                        .tab-pane.fade.in#tab1(ng-class="{'active': tab == 1}")
+                            form(role="form", name="frmAdd").form-horizontal
+                                label รหัสหน่วยบริการ (รหัสคลัง)
+                                input(type="text", ng-model="stockCode", placeholder="รหัสหน่วยบริการ", ng-required="true", ng-disabled="isUpdate").form-control
+                                label ชื่อคลังหลัก
+                                input(type="text", ng-model="stockName", placeholder="ระบุชื่อคลังหลัก",  ng-required="true").form-control
+                                br
+                                .btn-group
+                                    button(type="button", ng-disabled="frmAdd.$invalid", ng-click="doSave()").btn.btn-success
+                                        i.fa.fa-save
+                                        | &nbsp;บันทึก
+                                        
+                                    button(type="button", ng-click="setTab(0)").btn.btn-default
+                                        i.fa.fa-refresh
+                                        | &nbsp;ยกเลิก

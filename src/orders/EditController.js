@@ -1,12 +1,15 @@
-;(function (window, angular) {
+/* Edit product controller */
+(function (window, angular) {
 
     'use strict';
 
     var _ = require('lodash'),
         moment = require('moment');
 
-    angular.module('app.orders.NewController', ['app.orders.NewService'])
-        .controller('NewController', function ($scope, NewService) {
+    angular.module('app.orders.EditController', ['app.orders.NewService', 'app.orders.EditService'])
+        .controller('EditController', function ($scope, $routeParams, $timeout, NewService, EditService) {
+
+            $scope.orderId = $routeParams.id;
 
             $scope.suppliers = []; // all suppliers
             $scope.drugs = []; // all drugs
@@ -26,7 +29,6 @@
                 allowClear: true
             };
 
-
             // Get supplier
             NewService.getSuppliers()
             .then(function (rows) {
@@ -42,6 +44,36 @@
             }, function (err) {
                 console.log(err);
             });
+
+            // Get order
+            EditService.getOrder($scope.orderId)
+                .then(function (data) {
+                    $scope.orderDate = data.order_date;
+                    $scope.orderCode = data.order_code;
+                    $scope.supplier = data.supplier_code;
+                }, function (err) {
+                    console.log(err);
+                });
+
+            // Get order detail
+            EditService.getOrderDetail($scope.orderId)
+                .then(function (rows) {
+
+                    _.forEach(rows, function (v) {
+                        var item = {
+                            icode: v.icode,
+                            name: v.name,
+                            qty: v.qty,
+                            price: v.price,
+                            unit: v.unit
+                        };
+
+                        $scope.items.push(item);
+                    });
+
+                }, function (err) {
+                    console.log(err);
+                });
 
             $scope.toggleAdd = function () {
                 $scope.isAdd = $scope.isAdd ? false : true;
@@ -101,7 +133,6 @@
 
                     }
 
-
                     $scope.clearForm();
 
                 } else {
@@ -110,8 +141,7 @@
                         text: 'กรุณากรอกข้อมูลให้ครบ',
                         type: 'warning',
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: 'ตกลง',
-                        timer: 2000
+                        confirmButtonText: 'ตกลง'
                     });
                 }
             };
@@ -136,42 +166,45 @@
 
                 if (_.size($scope.items) && $scope.orderDate && $scope.supplier && $scope.orderCode) {
                     var data = {
-                        supplier_code: $scope.supplier,
-                        order_code: $scope.orderCode,
-                        order_date: moment($scope.orderDate).format('YYYY-MM-DD'),
-                        created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
-                        updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+                        supplierCode: $scope.supplier,
+                        orderId: $scope.orderId,
+                        orderDate: moment($scope.orderDate).format('YYYY-MM-DD'),
+                        updatedAt: moment().format('YYYY-MM-DD HH:mm:ss')
                     };
 
-                    NewService.saveOrder(data)
-                        .then(function (orderId) {
-                            // save order detail
-                            var items = [];
-                            _.forEach($scope.items, function (v) {
-                                var item = {
-                                    icode: v.icode,
-                                    order_id: orderId,
-                                    price: v.price,
-                                    qty: v.qty
-                                };
+                    EditService.saveOrder(data)
+                    .then(function () {
 
-                                items.push(item);
-                            });
+                        // remove order detail
+                        EditService.removeOrderDetail($scope.orderId)
+                            .then(function () {
+                                // save order detail
+                                var items = [];
 
-                            NewService.saveOrderDetail(items)
+                                _.forEach($scope.items, function (v) {
+                                    var item = {
+                                        icode: v.icode,
+                                        order_id: $scope.orderId,
+                                        price: v.price,
+                                        qty: v.qty
+                                    };
+
+                                    items.push(item);
+                                });
+
+                                EditService.saveOrderDetail(items)
                                 .then(function () {
-                                    $scope.items = [];
-                                    $scope.orderDate = null;
-                                    $scope.orderCode = null;
-                                    $scope.supplier = null;
-
                                     swal({
                                         title: 'สำเร็จ',
                                         text: 'บันทึกข้อมูลการเบิกเวชภัณฑ์เสร็จเรียบร้อยแล้ว',
                                         type: 'success',
                                         confirmButtonText: 'ตกลง',
-                                        timer: 2000
+                                        timer: 1000
                                     });
+
+                                    $timeout(function () {
+                                        location.href = 'Orders.html';
+                                    }, 1500);
 
                                 }, function (err) {
                                     console.log(err);
@@ -180,22 +213,24 @@
                                         text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
                                         type: 'warning',
                                         confirmButtonText: 'ตกลง',
-                                        confirmButtonColor: "#DD6B55",
-                                        timer: 2000
+                                        confirmButtonColor: "#DD6B55"
                                     });
                                 });
 
-                        }, function (err) {
-                            console.log(err);
-                            swal({
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
-                                type: 'warning',
-                                confirmButtonText: 'ตกลง',
-                                confirmButtonColor: "#DD6B55",
-                                timer: 2000
+                            }, function (err) {
+                                console.log(err);
                             });
+
+                    }, function (err) {
+                        console.log(err);
+                        swal({
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
+                            type: 'warning',
+                            confirmButtonText: 'ตกลง',
+                            confirmButtonColor: "#DD6B55"
                         });
+                    });
 
                 } else {
                     swal({
@@ -203,13 +238,44 @@
                         text: 'ไม่พบรายการเวชภัณฑ์ที่ต้องการเบิก',
                         type: 'warning',
                         confirmButtonText: 'ตกลง',
-                        confirmButtonColor: "#DD6B55",
-                        timer: 2000
+                        confirmButtonColor: "#DD6B55"
                     });
                 }
 
             };
 
+            $scope.removeOrder = function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "คุณต้องการลบรายการนี้ใช่หรือไม่?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "ใช่, ฉันต้องการลบ!",
+                    cancelButtonText: 'ยกเลิก',
+                    closeOnConfirm: false
+                }, function () {
+
+                    // do remove order
+                    EditService.removeOrder($scope.orderId)
+                        .then(function () {
+                            // Remove order detail
+                            EditService.removeOrderDetail($scope.orderId)
+                                .then(function () {
+                                    swal("ลบเสร็จเรียบร้อยแล้ว!", "ข้อมูลในรายการเบิก ได้ถูกลบออกจากระบบไปแล้ว.", "success");
+                                    $timeout(function () {
+                                        location.href = 'Orders.html';
+                                    }, 1500);
+                                }, function (err) {
+                                    console.log(err);
+                                });
+
+                        }, function (err) {
+                            console.log(err);
+                        });
+
+                });
+            };
 
         });
 

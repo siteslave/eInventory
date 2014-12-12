@@ -22,6 +22,7 @@
     "bootstrap": "~3.3",
     "angular-ui-select2": "~0.0.5",
     "angular-sanitize": "~1.3.2",
-    "angular-i18n": "~1.3.2"
+    "angular-i18n": "~1.3.2",
+    "sweetalert": "~0.3.2"
   }
 }

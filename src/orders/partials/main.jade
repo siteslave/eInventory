@@ -2,17 +2,17 @@
     .panel-heading
         ul.nav.nav-tabs
             li.active
-                a(href="#tab1", data-toggle="tab")
+                a(href="#", data-toggle="tab")
                     i.fa.fa-fw.fa-th-list
                     | &nbsp;รายการใบเบิก&nbsp;
-                    span.badge 99+
+                    span.badge [{{orders.length}}]
     .panel-body
         .tab-content
-            .tab-pane.fade.in.active#tab1
+            .tab-pane.fade.in.active
                 .row
                     .col-md-6.col-lg-6.col-sm-6
                         .input-group
-                            input(type="text", placeholder="ระบุเลขที่ใบเบิก เพื่อค้นหา").form-control.input-sm
+                            input(type="text", placeholder="ระบุเลขที่ใบเบิก เพื่อค้นหา", ng-model="query").form-control.input-sm
                             span.input-group-btn
                                 button(type="button").btn.btn-default.btn-sm
                                     i.fa.fa-search
@@ -24,38 +24,32 @@
                                 | &nbsp;ทั้งหมด
                             button(type="button").btn.btn-success.btn-sm
                                 i.fa.fa-check-square
-                                | &nbsp;อนุมัติ
+                                | &nbsp;นำเข้าแล้ว
                             button(type="button").btn.btn-danger.btn-sm
                                 i.fa.fa-remove
-                                | &nbsp;ยกเลิก
-
-                //table order history
+                                | &nbsp;ยังไม่นำเข้า
+                .row(ng-show="isProcessing")
+                    .col-md-12.col-lg-12.col-sm-12
+                        br
+                        .progress
+                            .progress-bar.progress-bar-success(role="progressbar")
+                //- table order history
                 table.table.table-striped
                     thead
                         tr
-                            th เลขที่
                             th วันที่
+                            th เลขที่
                             th เบิกจาก
                             th จำนวน
                             th ราคา
                             th #
                     tbody
-                        tr
-                            td(colspan="6") ...
-                nav
-                    ul.pagination.pagination-sm
-                        li.disabled
-                            a(href="#") &laquo;
-                        li.active
-                            a(href="#") 1
-                                span.sr-only (current)
-                        li
-                            a(href="#") 2
-                        li
-                            a(href="#") 3
-                        li
-                            a(href="#") 4
-                        li
-                            a(href="#") 5
-                        li
-                            a(href="#") &raquo;
+                        tr(ng-repeat="o in orders | filter: query")
+                            td.text-center {{o.order_date | toThaiDate}}
+                            td.text-center {{o.order_code}}
+                            td {{o.supplier_name}}
+                            td.text-right {{o.total_qty | number}}
+                            td.text-right {{o.total_price | number}}
+                            td.text-center 
+                                a(href="#/edit/{{o.id}}").btn.btn-default
+                                    i.fa.fa-edit

@@ -22,13 +22,14 @@
                     return q.promise;
                 },
 
-                doUpdate: function (icode, min_qty) {
+                doUpdate: function (icode, min_qty, mskh_code) {
                     var q = $q.defer();
 
                     db('stc_drug_items')
                         .where('icode', icode)
                         .update({
-                            min_qty: min_qty
+                            min_qty: min_qty,
+                            mskh_code: mskh_code
                         })
                         .exec(function (err) {
                             if (err) q.reject(err);

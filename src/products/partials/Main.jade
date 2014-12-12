@@ -29,27 +29,30 @@ br
    table.table.table-hover
       thead
          tr
+            th #
             th รหัส
             th ชื่อ
-            th ความแรง
+            //th ความแรง
             th หน่วย
-            th ราคาทุน
-            th ราคาขาย
+            th ทุน
+            th ขาย
+            th คงเหลือ
             th จุดเบิก
-            //th บัญชี
             th MSKH_CODE
             th #
       tbody
          tr(ng-repeat="d in drugs | filter:query | orderBy: 'name'", ng-class="{'danger': d.qty < d.min_qty}")
+            td.text-center {{$index+1}}
             td.text-center {{d.icode}}
             td {{d.name}}
-            td.text-center {{d.strength}}
+            //td.text-center {{d.strength}}
             td.text-center {{d.units}}
-            td.text-center {{d.cost}}
-            td.text-center {{d.price}}
-            td.text-center {{d.min_qty}}
+            td.text-center {{d.cost | number}}
+            td.text-center {{d.price | number}}
+            td.text-center {{d.qty | number}}
+            td.text-center {{d.min_qty | number}}
             //td.text-center {{d.drugaccount}}
             td.text-center {{d.mskh_code}}
             td.text-center
-               a(href="#/detail/{{d.icode}}").btn.btn-sm.btn-primary
+               a(href="#/detail/{{d.icode}}").btn.btn-default
                   i.fa.fa-edit

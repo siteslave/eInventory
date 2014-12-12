@@ -1,0 +1,40 @@
+.panel.with-nav-tabs.panel-primary
+    .panel-heading
+        ul.nav.nav-tabs
+            li.active
+                a(href="#/payment", data-toggle="tab")
+                    i.fa.fa-fw.fa-th-list
+                    | &nbsp; ประวัติการนำเข้า
+    .panel-body
+        .tab-content
+            .tab-pane.fade.in.active#tab1
+                blockquote
+                    i.fa.fa-info-circle
+                    | &nbsp;รายการค่าใช้จ่ายที่ยังไม่ถูกนำเข้าระบบ
+
+                .row
+                    .col-lg-9.col-md-9.col-sm-9
+                        .progress
+                            .progress-bar.progress-bar-success(role="progressbar", style="width: {{paymentImportedPercent}}") {{paymentImportedPercent}}
+                    .col-lg-3.col-md-3.col-sm-3
+                        span(ng-hide="isWatting").text-success {{paymentCurrentImported | number}}/{{paymentTotal | number}}
+                        span(ng-show="isWatting").text-muted &nbsp;รอซักครู่...
+                //table order history
+                table.table.table-striped
+                    thead
+                        tr
+                            th #
+                            th ตั้งแต่
+                            th ถึง
+                            th #
+                    tbody
+                        tr(ng-repeat="p in payments")
+                            td.text-center {{ $index+1 }}
+                            td.text-center {{ p.start_date | toThaiDate }}
+                            td.text-center {{ p.end_date | toThaiDate }}
+                            td.text-center
+                                .btn-group
+                                    button(type="button", ng-click="doImport(p.id, p.start_date, p.end_date)").btn.btn-default.btn-sm
+                                        i.fa.fa-chevron-circle-right
+                                    button(type="button", ng-click="doRemove(p.id, p.start_date, p.end_date)").btn.btn-danger.btn-sm
+                                        i.fa.fa-remove

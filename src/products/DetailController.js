@@ -17,7 +17,7 @@
                 });
 
             $scope.doUpdate = function () {
-                DetailService.doUpdate($scope.drug.icode, $scope.drug.min_qty)
+                DetailService.doUpdate($scope.drug.icode, $scope.drug.min_qty, $scope.drug.mskh_code)
                     .then(function () {
                         $scope.isError = false;
                         $scope.isSuccess = true;
