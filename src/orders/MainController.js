@@ -6,16 +6,20 @@
             $scope.isProcessing = false;
 
             // get order list
-            MainService.getOrders()
+            MainService.getOrders('N')
                 .then(function (rows) {
                     $scope.orders = rows;
                 }, function (err) {
                     console.log(err);
                 });
 
-            $scope.doProcess = function (orderId) {
-                $scope.isProcessing = true;
-
+            $scope.getList = function (isImported) {
+                MainService.getOrders(isImported)
+                .then(function (rows) {
+                    $scope.orders = rows;
+                }, function (err) {
+                    console.log(err);
+                });
             };
         });
 })(window, window.angular);

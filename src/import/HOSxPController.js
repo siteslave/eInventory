@@ -5,6 +5,9 @@
     var _ = require('lodash'),
         moment = require('moment');
 
+    var Q = require('q');
+    require('q-foreach')(Q);
+
     angular.module('app.import.HOSxPController', [
         'app.import.HOSxPService',
         'app.import.ImportDirective'
@@ -46,15 +49,29 @@
                     })
                     .then(function () {
 
-                        _.forEach($scope.rights, function (v) {
+                        Q.forEach($scope.rights, function (v) {
+                            var defer = Q.defer();
                             // import pttype
                             HOSxPService.importRight(v)
                                 .then(function () {
                                     $scope.currentImportRight++;
                                     $scope.importedRightPercent = Math.floor($scope.currentImportRight * 100 / $scope.totalRight)+'%';
+                                    defer.resolve();
                                 }, function (err) {
+                                    defer.reject(err);
                                     console.log(err);
                                 });
+
+                            return defer.promise;
+                        })
+                        .then(function () {
+                            swal({
+                                title: 'สำเร็จ',
+                                text: 'นำเข้าข้อมูลเสร็จเรียบร้อยแล้ว',
+                                type: 'success',
+                                confirmButtonText: 'ตกลง',
+                                timer: 1500
+                            });
                         });
 
                     }, function (err) {
@@ -73,7 +90,8 @@
                 promise.then(function(data) {
                     $scope.totalDrug = _.size(data);
 
-                    _.forEach(data, function (v) {
+                    Q.forEach(data, function (v) {
+                        var defer = Q.defer();
                         // get duplicated
                         HOSxPService.checkDuplicated(v.icode)
                             .then(function (isDuplicated) {
@@ -84,8 +102,8 @@
                                             $scope.importedPercent = Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
                                             //console.log($scope.importedPercent);
                                         }, function (err) {
+                                            defer.reject(err);
                                             console.log(err);
-                                            alert('Error [UPDATE]: Please see console.');
                                         });
                                 } else {
                                     HOSxPService.doImportDrug(v)
@@ -94,13 +112,29 @@
                                             $scope.importedPercent = Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
                                             //console.log($scope.importedPercent);
                                         }, function (err) {
+                                            defer.reject(err);
                                             console.log(err);
                                         });
                                 }
+
+                                defer.resolve();
+
                             }, function (err) {
                                 console.log(err);
-                                alert('Error [CHECK DUPLICATED]: Please see console.');
+                                defer.reject(err);
                             });
+
+                            return defer.promise;
+                    })
+                    .then(function () {
+                        // success
+                        swal({
+                            title: 'สำเร็จ',
+                            text: 'นำเข้าข้อมูลเสร็จเรียบร้อยแล้ว',
+                            type: 'success',
+                            confirmButtonText: 'ตกลง',
+                            timer: 1500
+                        });
                     });
                 })
                     .then(function () {
@@ -127,11 +161,22 @@
                 var promise = HOSxPService.checkDuplicatedPaymentLog(startDate, endDate);
                 promise.then(function (isDuplicated) {
                     if (isDuplicated) {
-                        if (confirm('รายการนี้เคยถูกนำเข้าระบบแล้ว ต้องการนำเข้าใหม่หรือไม่?')) {
+
+                        swal({
+                            title: "Are you sure?",
+                            text: "รายการนี้เคยนำเข้าระบบแล้ว ต้องการนำเข้าอีกหรือไม่?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "ใช่, ฉันต้องการนำเข้า!",
+                            cancelButtonText: 'ยกเลิก',
+                            closeOnConfirm: true
+                        }, function () {
                             importPayment(startDate, endDate);
-                        } else {
-                            $scope.paymentIsImported = true;
-                        }
+                        });
+
+                        $scope.paymentIsImported = true;
+
                     } else {
                         HOSxPService.savePaymentLog(startDate, endDate)
                             .then(function () {
@@ -156,14 +201,29 @@
                         $scope.totalPayment = _.size(rows);
                         $scope.payments = rows;
 
-                        _.forEach(rows, function (v) {
+                        Q.forEach(rows, function (v) {
+                            var defer = Q.defer();
+
                             HOSxPService.importDrugPayment(v)
                                 .then(function() {
                                     $scope.currentImportPayment++;
                                     $scope.importedPaymentPercent = Math.floor(($scope.currentImportPayment * 100) / $scope.totalPayment)+'%';
+                                    defer.resolve();
                                 }, function (err) {
+                                    defer.reject(err);
                                     console.log(err);
                                 });
+
+                            return defer.promise;
+                        })
+                        .then(function () {
+                            swal({
+                                title: 'สำเร็จ',
+                                text: 'นำเข้าข้อมูลเสร็จเรียบร้อยแล้ว',
+                                type: 'success',
+                                confirmButtonText: 'ตกลง',
+                                timer: 1500
+                            });
                         });
 
                     }, function (err) {

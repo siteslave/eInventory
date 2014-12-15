@@ -4,6 +4,10 @@
     var moment = require('moment'),
         _ = require('lodash');
 
+    var Q = require('q');
+
+    require('q-foreach')(Q);
+
     angular.module('app.clearance.PaymentController', ['app.clearance.PaymentService'])
         .controller('PaymentController', function ($scope, PaymentService) {
 
@@ -37,13 +41,10 @@
             /**
             * Import data
             */
-
-
             $scope.paymentImportedPercent = '0%';
             $scope.paymentCurrentImported = 0;
             $scope.paymentTotal = 0;
             $scope.isWatting = false;
-           
 
             $scope.doImport = function (id, startDate, endDate) {
                 var _startDate = moment(startDate).format('YYYY-MM-DD'),
@@ -58,8 +59,15 @@
                     .then(function (rows) {
                         // total rows
                         $scope.paymentTotal = _.size(rows);
-                        
-                        _.forEach(rows, function (v) {
+
+
+                        PaymentService.updateImportedStatus(id);
+                        _.remove($scope.payments, { id: id });
+
+                        Q.forEach(rows, function (v) {
+
+                            var defer = Q.defer();
+
                             PaymentService.saveToStockCard(v)
                                 .then(function () {
                                     PaymentService.updateClearanceStatus(v.guid)
@@ -70,18 +78,32 @@
 
                                             // update stock qty
                                             PaymentService.updateStockQty(v.icode, v.qty);
+
+                                            defer.resolve();
+
                                         }, function (err) {
+                                            defer.reject(err);
                                             console.log(err);
                                         });
                                 }, function (err) {
+                                    defer.reject(err);
                                     console.log(err);
                                 });
+
+                                return defer.promise;
+                        })
+                        .then(function () {
+
+                            swal({
+                                title: 'สำเร็จ',
+                                text: 'นำเข้าข้อมูลเสร็จเรียบร้อยแล้ว',
+                                type: 'success',
+                                confirmButtonText: 'ตกลง',
+                                timer: 1000
+                            });
+
                         });
 
-                        _.remove($scope.payments, { id: id });
-
-                        PaymentService.updateImportedStatus(id);
-                       
                     }, function (err) {
                         console.log(err);
                     });

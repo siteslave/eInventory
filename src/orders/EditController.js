@@ -253,7 +253,7 @@
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "ใช่, ฉันต้องการลบ!",
                     cancelButtonText: 'ยกเลิก',
-                    closeOnConfirm: false
+                    closeOnConfirm: true
                 }, function () {
 
                     // do remove order

@@ -44,14 +44,15 @@ block content
                         th จ่าย
                         th คงเหลือ
                 tbody
-                    tr(ng-repeat="c in cards", ng-class="{'success': c.is_get, 'danger': c.current_total < 0}")
+                    tr(ng-repeat="c in cards", ng-class="{'success': c.is_get}")
                         td.text-center {{$index+1}}
                         td.text-center {{c.cdate | toThaiDate}}
                         td.text-center {{c.ccode}}
                         td {{c.cname}}
                         td.text-right {{c.qty_in | number}}
                         td.text-right {{c.qty_out | number}}
-                        td.text-right {{c.current_total | number}}
+                        td.text-right 
+                            span(ng-class="{'text-danger': c.current_total < 0}") {{c.current_total | number}}
                     tr.success
                         td(colspan="4").text-right 
                             strong รวม

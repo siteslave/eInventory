@@ -19,20 +19,13 @@
                                     | &nbsp;ค้นหา
                     .col-md-6.col-lg-6.col-sm-6
                         .btn-group.pull-right
-                            button(type="button").btn.btn-default.btn-sm
-                                i.fa.fa-refresh
-                                | &nbsp;ทั้งหมด
-                            button(type="button").btn.btn-success.btn-sm
-                                i.fa.fa-check-square
+                            button(type="button", ng-click="getList('Y')").btn.btn-success.btn-sm
+                                i.fa.fa-check-square-o
                                 | &nbsp;นำเข้าแล้ว
-                            button(type="button").btn.btn-danger.btn-sm
-                                i.fa.fa-remove
+                            button(type="button", ng-click="getList('N')").btn.btn-default.btn-sm
+                                i.fa.fa-square-o
                                 | &nbsp;ยังไม่นำเข้า
-                .row(ng-show="isProcessing")
-                    .col-md-12.col-lg-12.col-sm-12
-                        br
-                        .progress
-                            .progress-bar.progress-bar-success(role="progressbar")
+
                 //- table order history
                 table.table.table-striped
                     thead
@@ -51,5 +44,5 @@
                             td.text-right {{o.total_qty | number}}
                             td.text-right {{o.total_price | number}}
                             td.text-center 
-                                a(href="#/edit/{{o.id}}").btn.btn-default
+                                a(href="#/edit/{{o.id}}", ng-disabled="o.is_imported == 'Y'").btn.btn-default
                                     i.fa.fa-edit
