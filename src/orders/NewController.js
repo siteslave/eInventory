@@ -5,7 +5,7 @@
     var _ = require('lodash'),
         moment = require('moment');
 
-    angular.module('app.orders.NewController', ['app.orders.NewService'])
+    angular.module('app.orders.NewController', [])
         .controller('NewController', function ($scope, NewService) {
 
             $scope.suppliers = []; // all suppliers

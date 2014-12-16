@@ -1,6 +1,6 @@
 ;(function (window, angular) {
 
-    angular.module('app.import.MSKHService', ['app.common.Config'])
+    angular.module('app.import.MSKHService', [])
         // Importer factory
         .factory('MSKHService', function ($q, Config) {
 

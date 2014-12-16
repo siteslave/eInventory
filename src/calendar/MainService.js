@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('app.calendar.MainService', ['app.common.Config'])
+    angular.module('app.calendar.MainService', [])
         .factory('MainService', function ($q, Config) {
 
             var db = Config.getConnection();

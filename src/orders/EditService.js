@@ -3,7 +3,7 @@
 
     'use strict';
 
-    angular.module('app.orders.EditService', ['app.common.Config'])
+    angular.module('app.orders.EditService', [])
         .factory('EditService', function ($q, Config) {
 
             var db = Config.getConnection();

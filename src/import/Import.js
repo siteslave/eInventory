@@ -4,8 +4,11 @@
 
     angular.module('app.import', [
         'ngRoute',
+        'app.common.Config',
         'app.import.HOSxPController',
-        'app.import.MSKHController'
+        'app.import.MSKHController',
+        'app.import.HOSxPService',
+        'app.import.ImportDirective'
     ])
         .config(function ($routeProvider) {
             $routeProvider

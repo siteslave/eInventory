@@ -1,6 +1,6 @@
 ;(function (window, angular) {
 
-    angular.module('app.orders.NewService', ['app.common.Config'])
+    angular.module('app.orders.NewService', [])
 
         .factory('NewService', function ($q, Config) {
 

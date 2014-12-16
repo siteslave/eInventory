@@ -1,7 +1,7 @@
 (function (window, angular) {
     'use strict';
 
-    angular.module('app.products.DetailService', ['app.common.Config'])
+    angular.module('app.products.DetailService', [])
         .factory('DetailService', function ($q, Config) {
 
             var db = Config.getConnection();

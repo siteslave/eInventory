@@ -6,7 +6,7 @@
     var _ = require('lodash'),
         moment = require('moment');
 
-    angular.module('app.orders.EditController', ['app.orders.NewService', 'app.orders.EditService'])
+    angular.module('app.orders.EditController', [])
         .controller('EditController', function ($scope, $routeParams, $timeout, NewService, EditService) {
 
             $scope.orderId = $routeParams.id;

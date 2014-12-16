@@ -1,5 +1,5 @@
 ;(function (window, angular) {
-    angular.module('app.orders.MainController', ['app.orders.MainService'])
+    angular.module('app.orders.MainController', [])
         .controller('MainController', function ($scope, MainService) {
 
             $scope.orders = []; // all order list

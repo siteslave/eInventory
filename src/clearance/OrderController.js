@@ -4,7 +4,7 @@
     var _ = require('lodash'),
         moment = require('moment');
 
-    angular.module('app.clearance.OrderController', ['app.clearance.OrderService'])
+    angular.module('app.clearance.OrderController', [])
         .controller('OrderController', function ($scope, OrderService) {
 
             $scope.orders = [];

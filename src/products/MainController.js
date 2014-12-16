@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('app.products.MainController', ['app.products.MainService'])
+    angular.module('app.products.MainController', [])
         .controller('MainController', function ($scope, MainService) {
 
             $scope.drugs = [];

@@ -32,11 +32,11 @@ br
             th #
             th รหัส
             th ชื่อ
-            //th ความแรง
+            //-- th ความแรง
             th หน่วย
             th ทุน
             th ขาย
-            th คงเหลือ
+            //-- th คงเหลือ
             th จุดเบิก
             th MSKH_CODE
             th #
@@ -49,10 +49,10 @@ br
             td.text-center {{d.units}}
             td.text-center {{d.cost | number}}
             td.text-center {{d.price | number}}
-            td.text-center 
-                span(ng-class="{'text-danger': d.qty < d.min_qty, 'text-success': d.qty > 0}") {{d.qty | number}}
+            //-- td.text-center 
+            //--    span(ng-class="{'text-danger': d.qty < d.min_qty, 'text-success': d.qty > 0}") {{d.qty | number}}
             td.text-center {{d.min_qty | number}}
-            //td.text-center {{d.drugaccount}}
+            //-- td.text-center {{d.drugaccount}}
             td.text-center {{d.mskh_code}}
             td.text-center
                a(href="#/detail/{{d.icode}}").btn.btn-default

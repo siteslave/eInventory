@@ -5,14 +5,13 @@
     var _ = require('lodash'),
         moment = require('moment');
 
+        require('moment-range')(moment);
+
     var Q = require('q');
     require('q-foreach')(Q);
 
-    angular.module('app.import.HOSxPController', [
-        'app.import.HOSxPService',
-        'app.import.ImportDirective'
-        ])
-        .controller('HOSxPController', function ($scope, HOSxPService) {
+    angular.module('app.import.HOSxPController', [])
+        .controller('HOSxPController', function ($scope, $window, HOSxPService) {
 
             $scope.tab = 0;
 
@@ -55,7 +54,8 @@
                             HOSxPService.importRight(v)
                                 .then(function () {
                                     $scope.currentImportRight++;
-                                    $scope.importedRightPercent = Math.floor($scope.currentImportRight * 100 / $scope.totalRight)+'%';
+                                    $scope.importedRightPercent =
+                                        Math.floor($scope.currentImportRight * 100 / $scope.totalRight)+'%';
                                     defer.resolve();
                                 }, function (err) {
                                     defer.reject(err);
@@ -99,7 +99,8 @@
                                     HOSxPService.doUpdateDrug(v)
                                         .then(function () {
                                             $scope.currentImportDrug++;
-                                            $scope.importedPercent = Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
+                                            $scope.importedPercent =
+                                                Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
                                             //console.log($scope.importedPercent);
                                         }, function (err) {
                                             defer.reject(err);
@@ -109,7 +110,8 @@
                                     HOSxPService.doImportDrug(v)
                                         .then(function () {
                                             $scope.currentImportDrug++;
-                                            $scope.importedPercent = Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
+                                            $scope.importedPercent =
+                                                Math.floor($scope.currentImportDrug * 100 / $scope.totalDrug)+'%';
                                             //console.log($scope.importedPercent);
                                         }, function (err) {
                                             defer.reject(err);
@@ -146,50 +148,66 @@
 
             $scope.doImportPayment = function () {
 
-                // get payment
-                var startDate = moment($scope.startDate).format('YYYY-MM-DD'),
-                    endDate = moment($scope.endDate).format('YYYY-MM-DD');
+                $scope._startDate = $window.sessionStorage.getItem('startDate');
+                $scope._endDate = $window.sessionStorage.getItem('endDate');
 
-                $scope.paymentIsImported = false;
+                $scope.range = moment().range(moment($scope._startDate, 'YYYY-MM-DD'), moment($scope._endDate, 'YYYY-MM-DD'));
 
-                $scope.payments = 0;
-                $scope.totalPayment = 0;
-                $scope.currentImportPayment = 0;
-                $scope.importedPaymentPercent = '0%';
+                if ($scope.range.contains($scope.startDate) && $scope.range.contains($scope.endDate)) {
 
-                // check duplicated log
-                var promise = HOSxPService.checkDuplicatedPaymentLog(startDate, endDate);
-                promise.then(function (isDuplicated) {
-                    if (isDuplicated) {
+                    $scope.paymentIsImported = false;
 
-                        swal({
-                            title: "Are you sure?",
-                            text: "รายการนี้เคยนำเข้าระบบแล้ว ต้องการนำเข้าอีกหรือไม่?",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "ใช่, ฉันต้องการนำเข้า!",
-                            cancelButtonText: 'ยกเลิก',
-                            closeOnConfirm: true
-                        }, function () {
-                            importPayment(startDate, endDate);
-                        });
+                    $scope.payments = 0;
+                    $scope.totalPayment = 0;
+                    $scope.currentImportPayment = 0;
+                    $scope.importedPaymentPercent = '0%';
 
-                        $scope.paymentIsImported = true;
+                    // check duplicated log
 
-                    } else {
-                        HOSxPService.savePaymentLog(startDate, endDate)
-                            .then(function () {
-                                importPayment(startDate, endDate);
-                            }, function (err) {
-                                console.log('[Insert log]: ' + err);
-                                alert('Error [Insert log]: Please see error in console');
+                    var _startDate = moment($scope.startDate).format('YYYY-MM-DD'),
+                        _endDate = moment($scope.endDate).format('YYYY-MM-DD');
+
+                    var promise = HOSxPService.checkDuplicatedPaymentLog(_startDate, _endDate);
+                    promise.then(function (isDuplicated) {
+                        if (isDuplicated) {
+
+                            swal({
+                                title: "Are you sure?",
+                                text: "รายการนี้เคยนำเข้าระบบแล้ว ต้องการนำเข้าอีกหรือไม่?",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "ใช่, ฉันต้องการนำเข้า!",
+                                cancelButtonText: 'ยกเลิก',
+                                closeOnConfirm: true
+                            }, function () {
+                                importPayment(_startDate, _endDate);
                             });
-                    }
-                }, function (err) {
-                    console.log(err);
-                    alert('Error: View console to see log');
-                });
+
+                            $scope.paymentIsImported = true;
+
+                        } else {
+                            HOSxPService.savePaymentLog(_startDate, _endDate)
+                                .then(function () {
+                                    importPayment(_startDate, _endDate);
+                                }, function (err) {
+                                    console.log('[Insert log]: ' + err);
+                                    alert('Error [Insert log]: Please see error in console');
+                                });
+                        }
+                    }, function (err) {
+                        console.log(err);
+                        alert('Error: View console to see log');
+                    });
+                } else {
+                    // not in period
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ช่วงเวลาที่กำหนดไม่ได้อยู่ในปีงบประมาณ ปัจจุบัน ' + '['+$window.sessionStorage.getItem('year')+']',
+                        type: 'warning',
+                        confirmButtonText: 'ตกลง'
+                    });
+                }
 
             };
 
@@ -207,7 +225,8 @@
                             HOSxPService.importDrugPayment(v)
                                 .then(function() {
                                     $scope.currentImportPayment++;
-                                    $scope.importedPaymentPercent = Math.floor(($scope.currentImportPayment * 100) / $scope.totalPayment)+'%';
+                                    $scope.importedPaymentPercent =
+                                        Math.floor(($scope.currentImportPayment * 100) / $scope.totalPayment)+'%';
                                     defer.resolve();
                                 }, function (err) {
                                     defer.reject(err);

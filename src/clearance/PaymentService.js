@@ -1,7 +1,7 @@
 (function (window, angular) {
     'use strict';
 
-    angular.module('app.clearance.PaymentService', ['app.common.Config'])
+    angular.module('app.clearance.PaymentService', [])
         .factory('PaymentService', function ($q, Config) {
 
             var db = Config.getConnection();

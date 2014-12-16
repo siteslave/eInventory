@@ -6,7 +6,7 @@
         gui = require('nw.gui'),
         win = gui.Window.get();
 
-    angular.module('app.calendar.MainController', ['app.calendar.MainService'])
+    angular.module('app.calendar.MainController', [])
         .controller('MainController', function ($scope, $window, MainService) {
 
             $scope.peroid = [];

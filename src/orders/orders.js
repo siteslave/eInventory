@@ -5,10 +5,13 @@
     angular.module('app.orders', [
         'ngRoute',
         'ui.select2',
+        'app.common.Config',
         'app.filters.Main',
         'app.orders.MainController',
         'app.orders.NewController',
-        'app.orders.EditController'
+        'app.orders.EditController',
+        'app.orders.NewService',
+        'app.orders.MainService'
     ])
         .config(function ($routeProvider) {
            $routeProvider

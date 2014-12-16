@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('app.orders.MainService', ['app.common.Config'])
+    angular.module('app.orders.MainService', [])
         .factory('MainService', function ($q, Config) {
 
             var db = Config.getConnection();

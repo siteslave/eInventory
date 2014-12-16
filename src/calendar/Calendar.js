@@ -2,6 +2,11 @@
 
     'use strict';
 
-    angular.module('app.calendar.Calendar', ['app.calendar.MainController', 'app.filters.Main']);
+    angular.module('app.calendar.Calendar', [
+        'app.common.Config',
+        'app.calendar.MainController',
+        'app.calendar.MainService',
+        'app.filters.Main'
+    ]);
 
 })(window, window.angular);

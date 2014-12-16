@@ -1,4 +1,77 @@
 extends ../layouts/main
 
+block scripts
+    script(src="../../vendor/highcharts/highcharts.src.js")
+    script(src="../../vendor/highcharts-ng/dist/highcharts-ng.js")
+    script(src="Index.js")
+    script(src="IndexController.js")
+    script(src="IndexService.js")
+
 block content
-   | Dashboard
+    ol.breadcrumb
+        li.active
+            i.fa.fa-line-chart
+            | &nbsp;Dashboard
+            
+    div(ng-app="app.pages.Index", ng-controller="IndexController")
+                                                                        
+        .row
+            .col-sm-12.col-md-12.col-lg-12
+                .panel.panel-primary
+                    .panel-heading
+                        i.fa.fa-bar-chart-o
+                        | &nbsp;แยกรายสิทธิ์
+                    .panel-body
+                        highchart#chart1(config="chartConfig")
+            //- .col-sm-5.col-md-5.col-lg-5
+            //-     .panel.panel-primary
+            //-         .panel-heading
+            //-             i.fa.fa-bar-chart-o
+            //-             | &nbsp;แยกรายสิทธิ์ (ครั้ง)
+            //-         .panel-body
+            //-             table.table.table-striped
+            //-                 thead
+            //-                     tr
+            //-                         th #
+            //-                         th รายการ
+            //-                         th ครั้ง
+            //-                 tbody
+            //-                     tr(ng-repeat="r in rights | orderBy: 'total': true")
+            //-                         td.text-right {{$index+1}}
+            //-                         td {{r.name}}
+            //-                         td.text-right {{r.total | number}}
+        .row
+            .col-sm-6.col-md-6.col-lg-6
+                .panel.panel-primary
+                    .panel-heading
+                        i.fa.fa-bar-chart-o
+                        | &nbsp;สถิติการจ่ายยา (ครั้ง)
+                    .panel-body
+                        table.table.table-striped
+                            thead
+                                tr
+                                    th #
+                                    th รายการ
+                                    th ครั้ง
+                            tbody
+                                tr(ng-repeat="v in visits")
+                                    td.text-right {{$index+1}}
+                                    td {{v.name}}
+                                    td.text-right {{v.total | number}}
+            .col-sm-6.col-md-6.col-lg-6
+                .panel.panel-primary
+                    .panel-heading
+                        i.fa.fa-bar-chart-o
+                        | &nbsp;มูลค่าการจ่าย (บาท)
+                    .panel-body
+                        table.table.table-striped
+                            thead
+                                tr
+                                    th #
+                                    th รายการ
+                                    th ราคา
+                            tbody
+                                tr(ng-repeat="p in itemsPrice")
+                                    td.text-right {{$index+1}}
+                                    td {{p.name}}
+                                    td.text-right {{p.total | number}}    

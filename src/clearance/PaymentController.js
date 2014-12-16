@@ -5,7 +5,6 @@
         _ = require('lodash');
 
     var Q = require('q');
-
     require('q-foreach')(Q);
 
     angular.module('app.clearance.PaymentController', ['app.clearance.PaymentService'])
@@ -60,37 +59,34 @@
                         // total rows
                         $scope.paymentTotal = _.size(rows);
 
-
                         PaymentService.updateImportedStatus(id);
                         _.remove($scope.payments, { id: id });
 
                         Q.forEach(rows, function (v) {
 
                             var defer = Q.defer();
+                            var promise = PaymentService.saveToStockCard(v);
 
-                            PaymentService.saveToStockCard(v)
-                                .then(function () {
-                                    PaymentService.updateClearanceStatus(v.guid)
-                                        .then(function () {
-                                            $scope.isWatting = false;
-                                            $scope.paymentCurrentImported++;
-                                            $scope.paymentImportedPercent = Math.floor($scope.paymentCurrentImported * 100 / $scope.paymentTotal) + '%';
+                            // promise.then(function () {
+                            //     return PaymentService.updateStockQty(v.icode, v.qty);
+                            // })
+                            //
+                            promise.then(function () {
+                                $scope.isWatting = false;
+                                $scope.paymentCurrentImported++;
+                                $scope.paymentImportedPercent =
+                                    Math.floor($scope.paymentCurrentImported * 100 / $scope.paymentTotal) + '%';
+                                return PaymentService.updateClearanceStatus(v.guid);
+                            })
+                            .then(function () {
+                                defer.resolve();
+                            }, function (err) {
+                                defer.reject(err);
+                                console.log(err);
+                            });
 
-                                            // update stock qty
-                                            PaymentService.updateStockQty(v.icode, v.qty);
+                            return defer.promise;
 
-                                            defer.resolve();
-
-                                        }, function (err) {
-                                            defer.reject(err);
-                                            console.log(err);
-                                        });
-                                }, function (err) {
-                                    defer.reject(err);
-                                    console.log(err);
-                                });
-
-                                return defer.promise;
                         })
                         .then(function () {
 

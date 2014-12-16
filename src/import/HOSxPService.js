@@ -2,7 +2,7 @@
 
     var moment = require('moment');
 
-    angular.module('app.import.HOSxPService', ['app.common.Config'])
+    angular.module('app.import.HOSxPService', [])
         // Importer factory
         .factory('HOSxPService', function ($q, Config) {
 
@@ -112,6 +112,7 @@
 
                     return q.promise;
                 },
+
                 importDrugPayment: function (v) {
                     var q = $q.defer();
 

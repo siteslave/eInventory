@@ -4,8 +4,11 @@
     angular.module('app.clearance.Clearance', [
         'ngRoute',
         'app.filters.Main',
+        'app.common.Config',
         'app.clearance.OrderController',
-        'app.clearance.PaymentController'
+        'app.clearance.PaymentController',
+        'app.clearance.OrderService',
+        'app.clearance.PaymentService'
     ])
         .config(function ($routeProvider) {
             $routeProvider
