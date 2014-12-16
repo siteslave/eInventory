@@ -2,7 +2,7 @@
 
     var _ = require('lodash');
 
-    angular.module('app.stock.MainController', ['app.stock.MainService'])
+    angular.module('app.stock.MainController', [])
         .controller('MainController', function ($scope, MainService) {
 
             // Set stock list

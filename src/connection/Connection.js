@@ -2,6 +2,10 @@
 
     'use strict';
 
-    angular.module('app.connection', ['app.connection.ConnectionController']);
+    angular.module('app.connection', [
+        'app.common.Config',
+        'app.connection.ConnectionController',
+        'app.connection.ConnectionService'
+    ]);
 
 })(window, window.angular);

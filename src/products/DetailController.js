@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('app.products.DetailController', ['app.products.DetailService'])
+    angular.module('app.products.DetailController', [])
         .controller('DetailController', function ($scope, $routeParams, DetailService) {
             //console.log($routeParams);
 

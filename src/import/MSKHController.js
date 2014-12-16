@@ -2,7 +2,7 @@
 
     'use strict';
 
-    angular.module('app.import.MSKHController', ['app.import.MSKHService'])
+    angular.module('app.import.MSKHController', [])
         .controller('MSKHController', function ($scope, MSKHService) {
 
             $scope.tab = 0;

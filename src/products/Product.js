@@ -1,4 +1,5 @@
 (function (window, angular) {
+    
     'use strict';
 
     angular.module('app.products.Product', [

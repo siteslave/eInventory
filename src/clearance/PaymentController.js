@@ -7,7 +7,7 @@
     var Q = require('q');
     require('q-foreach')(Q);
 
-    angular.module('app.clearance.PaymentController', ['app.clearance.PaymentService'])
+    angular.module('app.clearance.PaymentController', [])
         .controller('PaymentController', function ($scope, PaymentService) {
 
             $scope.payments = [];

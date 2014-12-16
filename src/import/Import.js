@@ -8,6 +8,7 @@
         'app.import.HOSxPController',
         'app.import.MSKHController',
         'app.import.HOSxPService',
+        'app.import.MSKHService',
         'app.import.ImportDirective'
     ])
         .config(function ($routeProvider) {

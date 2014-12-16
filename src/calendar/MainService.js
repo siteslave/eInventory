@@ -3,11 +3,13 @@
     'use strict';
 
     angular.module('app.calendar.MainService', [])
+    
         .factory('MainService', function ($q, Config) {
 
             var db = Config.getConnection();
 
             return {
+
                 savePeriod: function (name, startDate, endDate) {
                     var q = $q.defer();
 

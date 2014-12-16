@@ -2,10 +2,7 @@
 
     'use strict';
 
-    angular.module('app.connection.ConnectionController', [
-        'app.connection.ConnectionService',
-        'app.common.Config'
-    ])
+    angular.module('app.connection.ConnectionController', [])
         .controller('ConnectionController', function ($scope, ConnectionService, Config) {
 
             var config = Config.getConfigure();

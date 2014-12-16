@@ -1,6 +1,6 @@
 (function (window, angular) {
 
-    angular.module('app.stock.MainService', ['app.common.Config'])
+    angular.module('app.stock.MainService', [])
         .factory('MainService', function ($q, Config) {
 
             var db = Config.getConnection();
