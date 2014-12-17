@@ -14,32 +14,32 @@ block content
             | &nbsp;Dashboard
             
     div(ng-app="app.pages.Index", ng-controller="IndexController")
-                                                                        
+    
         .row
-            .col-sm-12.col-md-12.col-lg-12
+            .col-sm-8.col-md-8.col-lg-8
                 .panel.panel-primary
                     .panel-heading
                         i.fa.fa-bar-chart-o
                         | &nbsp;แยกรายสิทธิ์
                     .panel-body
                         highchart#chart1(config="chartConfig")
-            //- .col-sm-5.col-md-5.col-lg-5
-            //-     .panel.panel-primary
-            //-         .panel-heading
-            //-             i.fa.fa-bar-chart-o
-            //-             | &nbsp;แยกรายสิทธิ์ (ครั้ง)
-            //-         .panel-body
-            //-             table.table.table-striped
-            //-                 thead
-            //-                     tr
-            //-                         th #
-            //-                         th รายการ
-            //-                         th ครั้ง
-            //-                 tbody
-            //-                     tr(ng-repeat="r in rights | orderBy: 'total': true")
-            //-                         td.text-right {{$index+1}}
-            //-                         td {{r.name}}
-            //-                         td.text-right {{r.total | number}}
+            .col-sm-4.col-md-4.col-lg-4
+                .panel.panel-primary
+                    .panel-heading
+                        i.fa.fa-bar-chart-o
+                        | &nbsp;นำเข้าล่าสุด (10 อันดับแรก)
+                    .panel-body
+                        table.table.table-striped
+                            thead
+                                tr
+                                    th #
+                                    th ตั้งแต่
+                                    th ถึง
+                            tbody
+                                tr(ng-repeat="l in importLogs | orderBy: 'date_start': true")
+                                    td.text-center {{$index+1}}
+                                    td.text-center {{l.start_date | toThaiDate}}
+                                    td.text-center {{l.end_date | toThaiDate}}
         .row
             .col-sm-6.col-md-6.col-lg-6
                 .panel.panel-primary

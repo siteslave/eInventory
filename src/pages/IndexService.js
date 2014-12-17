@@ -62,9 +62,23 @@
                             });
 
                         return q.promise;
+                    },
+
+                    getImportLogs: function (startDate, endDate) {
+                        var q = $q.defer();
+
+                        db('stc_payments_log')
+                            .where('is_imported', 'Y')
+                            .orderBy('start_date', 'desc')
+                            .limit(10)
+                            .exec(function (err, rows) {
+                                if (err) q.reject(err);
+                                else q.resolve(rows);
+                            });
+
+                        return q.promise;
                     }
                 };
         });
-
 
 })(window, window.angular);

@@ -2,6 +2,11 @@
 
     'use strict';
 
+    var events = require('events'),
+        em = new events.EventEmitter();
+
+      em.setMaxListeners(0);
+
     angular.module('app.orders', [
         'ngRoute',
         'ui.select2',
@@ -11,7 +16,8 @@
         'app.orders.NewController',
         'app.orders.EditController',
         'app.orders.NewService',
-        'app.orders.MainService'
+        'app.orders.MainService',
+        'app.orders.EditService'
     ])
         .config(function ($routeProvider) {
            $routeProvider

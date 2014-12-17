@@ -1,6 +1,11 @@
 (function (window, angular) {
-    
+
     'use strict';
+    
+    var events = require('events'),
+        em = new events.EventEmitter();
+
+      em.setMaxListeners(0);
 
     angular.module('app.products.Product', [
         'ngRoute',

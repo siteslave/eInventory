@@ -1,0 +1,62 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Balance.js")
+    script(src="BalanceController.js")
+    script(src="BalanceService.js")
+        
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-calculator
+            | &nbsp;จำนวนสินค้าคงเหลือ
+
+    .alert.alert-info
+        i.fa.fa-info-circle
+        | &nbsp;ข้อมูลนี้เป็นข้อมูลในปีงบประมาณปัจจุบันที่คุณกำลังใช้งานอยู่ (เลือกไว้ตอนล๊อกอินเข้าใช้งาน)
+    
+    div(ng-app="app.reports.balance.Balance", ng-controller="BalanceController")
+        
+        form.form-inline(role="form").well-sm
+            | &nbsp;ค้นหา &nbsp;
+            input(type="text", ng-model="query", style="width: 250px;", placeholder="ระบุคำค้นหา...").form-control
+            //- button(type="button").btn.btn-success.pull-right
+            //-     i.fa.fa-file-excel-o
+            //-     | &nbsp;ส่งออก
+        br
+        div(cg-busy="{promise:promise,message:'กรุณารอซักครู่...', backdrop:true}")
+            table.table.table-hover.well-sm
+                thead
+                    tr
+                        th #
+                        th รหัส
+                        th ชื่อเวชภัณฑ์
+                        th หน่วย
+                        th ทุน
+                        th ขาย
+                        th รับ
+                        th จ่าย
+                        th คงเหลือ
+                        //- th #
+                tbody
+                    tr(ng-repeat="p in products | filter: query")
+                        td.text-right {{$index+1}}
+                        td.text-center {{p.icode}}
+                        td {{p.name}}
+                        td.text-center {{p.units}}
+                        td.text-right {{p.cost | number}}
+                        td.text-right {{p.price | number}}
+                        td.text-right {{p.total_in | number}}
+                        td.text-right {{p.total_out | number}}
+                        td.text-right 
+                            span(ng-class="{'text-danger': (p.total_in - p.total_out) < 0, 'text-success': (p.total_in - p.total_out) > 0}")
+                                strong {{p.total_in - p.total_out | number}}
+                        //- td.text-center
+                        //-     button(type="button").btn.btn-sm.btn-primary
+                        //-         i.fa.fa-edit
+                                
+                        

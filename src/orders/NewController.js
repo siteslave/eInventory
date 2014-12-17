@@ -143,47 +143,64 @@
                         updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
                     };
 
-                    NewService.saveOrder(data)
-                        .then(function (orderId) {
-                            // save order detail
-                            var items = [];
-                            _.forEach($scope.items, function (v) {
-                                var item = {
-                                    icode: v.icode,
-                                    order_id: orderId,
-                                    price: v.price,
-                                    qty: v.qty
-                                };
-
-                                items.push(item);
-                            });
-
-                            NewService.saveOrderDetail(items)
-                                .then(function () {
-                                    $scope.items = [];
-                                    $scope.orderDate = null;
-                                    $scope.orderCode = null;
-                                    $scope.supplier = null;
-
-                                    swal({
-                                        title: 'สำเร็จ',
-                                        text: 'บันทึกข้อมูลการเบิกเวชภัณฑ์เสร็จเรียบร้อยแล้ว',
-                                        type: 'success',
-                                        confirmButtonText: 'ตกลง',
-                                        timer: 2000
-                                    });
-
-                                }, function (err) {
-                                    console.log(err);
-                                    swal({
-                                        title: 'เกิดข้อผิดพลาด',
-                                        text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
-                                        type: 'warning',
-                                        confirmButtonText: 'ตกลง',
-                                        confirmButtonColor: "#DD6B55",
-                                        timer: 2000
-                                    });
+                    NewService.checkDuplicated(data.order_code)
+                        .then(function (isDuplicated) {
+                            if (isDuplicated) {
+                                swal({
+                                    title: 'ข้อมูลซ้ำ',
+                                    text: 'เนื่องจากเลขที่ใบเบิกนี้ได้เคยบันทึกเข้าระบบแล้ว ไม่สามารถบันทึกซ้ำได้อีก กรุณาตรวจสอบ' ,
+                                    type: 'warning',
+                                    confirmButtonText: 'ตกลง',
+                                    confirmButtonColor: "#DD6B55",
+                                    timer: 2000
                                 });
+                            } else {
+                                NewService.saveOrder(data)
+                                    .then(function (orderId) {
+                                        // save order detail
+                                        var items = [];
+                                        _.forEach($scope.items, function (v) {
+                                            var item = {
+                                                icode: v.icode,
+                                                order_id: orderId,
+                                                price: v.price,
+                                                qty: v.qty
+                                            };
+
+                                            items.push(item);
+                                        });
+
+                                        NewService.saveOrderDetail(items)
+                                            .then(function () {
+                                                $scope.items = [];
+                                                $scope.orderDate = null;
+                                                $scope.orderCode = null;
+                                                $scope.supplier = null;
+
+                                                swal({
+                                                    title: 'สำเร็จ',
+                                                    text: 'บันทึกข้อมูลการเบิกเวชภัณฑ์เสร็จเรียบร้อยแล้ว',
+                                                    type: 'success',
+                                                    confirmButtonText: 'ตกลง',
+                                                    timer: 2000
+                                                });
+
+                                            }, function (err) {
+                                                console.log(err);
+                                                swal({
+                                                    title: 'เกิดข้อผิดพลาด',
+                                                    text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
+                                                    type: 'warning',
+                                                    confirmButtonText: 'ตกลง',
+                                                    confirmButtonColor: "#DD6B55",
+                                                    timer: 2000
+                                                });
+                                            });
+
+                                    }, function (err) {
+                                        console.log(err);
+                                    });
+                            }
 
                         }, function (err) {
                             console.log(err);

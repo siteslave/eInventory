@@ -62,6 +62,23 @@
                         });
 
                     return q.promise;
+                },
+
+                checkDuplicated: function (orderCode) {
+                    var q = $q.defer();
+
+                    db('stc_orders')
+                        .where('order_code', orderCode)
+                        .count('* as total')
+                        .exec(function (err, rows) {
+                            if (err) q.reject(err);
+                            else {
+                                if (rows[0].total > 0) q.resolve(true);
+                                else q.resolve(false);
+                            }
+                        });
+
+                    return q.promise;
                 }
             };
         });

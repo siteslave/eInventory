@@ -4,7 +4,7 @@
 
     var _ = require('lodash');
 
-    angular.module('app.pages.IndexController', ['highcharts-ng'])
+    angular.module('app.pages.IndexController', [])
         .controller('IndexController', function ($scope, $window, IndexService) {
 
             $scope.year = $window.sessionStorage.getItem('year');
@@ -21,6 +21,12 @@
                     console.log(err);
                 });
 
+            IndexService.getImportLogs($scope.startDate, $scope.endDate)
+                .then(function (rows) {
+                    $scope.importLogs = rows;
+                }, function (err) {
+                    console.log(err);
+                });
 
             IndexService.getTopPerPrice($scope.startDate, $scope.endDate)
                 .then(function (rows) {
@@ -71,7 +77,7 @@
                 }
             };
 
-
+            // Set graph data
             IndexService.getTopByRight($scope.startDate, $scope.endDate)
                 .then(function (rows) {
 
