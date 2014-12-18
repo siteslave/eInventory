@@ -44,12 +44,16 @@
                     }
                 };
 
-                console.log(config);
-
                 // Save configure to json file
                 ConnectionService.saveConnection(config)
                     .then(function () {
-                        alert('บันทึกข้อมูลเสร็จเรียบร้อยแล้ว');
+                        swal({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลเสร็จเรียบร้อยแล้ว',
+                            type: 'success',
+                            confirmButtonText: 'ตกลง',
+                            timer: 1500
+                        });
                     }, function (err) {
                        alert('เกิดข้อผิดพลาด: ' + JSON.stringify(err));
                     });

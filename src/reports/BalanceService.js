@@ -41,6 +41,7 @@
 
                 db('stc_drug_items as d')
                     .select('d.cost', 'd.price', 'd.units', 'd.icode', 'd.name', totalInQuery, totalOutQuery)
+                    .orderBy('d.name')
                     //.toSQL();
                      .exec(function (err, rows) {
                          if (err) q.reject(err);
