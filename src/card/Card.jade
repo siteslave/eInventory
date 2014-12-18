@@ -33,32 +33,33 @@ block content
                     | &nbsp;แสดง
             br
 
-            table.table.table-striped
-                thead
-                    tr
-                        th #
-                        th วันที่
-                        th เลขที่อ้างอิง
-                        th รายการ
-                        th รับ
-                        th จ่าย
-                        th คงเหลือ
-                tbody
-                    tr(ng-repeat="c in cards", ng-class="{'success': c.is_get}")
-                        td.text-center {{$index+1}}
-                        td.text-center {{c.cdate | toThaiDate}}
-                        td.text-center {{c.ccode}}
-                        td {{c.cname}}
-                        td.text-right {{c.qty_in | number}}
-                        td.text-right {{c.qty_out | number}}
-                        td.text-right 
-                            span(ng-class="{'text-danger': c.current_total < 0}") {{c.current_total | number}}
-                    tr.success
-                        td(colspan="4").text-right 
-                            strong รวม
-                        td.text-right.text-success 
-                            strong {{totalQtyIn | number}}
-                        td.text-right.text-danger 
-                            strong {{totalQtyOut | number}}
-                        td.text-right.text-info
-                            strong {{totalQty | number}}
+            div(cg-busy="{promise:promise,message:'กรุณารอซักครู่...', backdrop:true}")
+                table.table.table-striped
+                    thead
+                        tr
+                            th #
+                            th วันที่
+                            th เลขที่อ้างอิง
+                            th รายการ
+                            th รับ
+                            th จ่าย
+                            th คงเหลือ
+                    tbody
+                        tr(ng-repeat="c in cards", ng-class="{'success': c.is_get}")
+                            td.text-center {{$index+1}}
+                            td.text-center {{c.cdate | toThaiDate}}
+                            td.text-center {{c.ccode}}
+                            td {{c.cname}}
+                            td.text-right {{c.qty_in | number}}
+                            td.text-right {{c.qty_out | number}}
+                            td.text-right 
+                                span(ng-class="{'text-danger': c.current_total < 0}") {{c.current_total | number}}
+                        tr.success
+                            td(colspan="4").text-right 
+                                strong รวม
+                            td.text-right.text-success 
+                                strong {{totalQtyIn | number}}
+                            td.text-right.text-danger 
+                                strong {{totalQtyOut | number}}
+                            td.text-right.text-info
+                                strong {{totalQty | number}}

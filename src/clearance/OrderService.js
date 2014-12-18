@@ -119,6 +119,23 @@
                         });
 
                     return q.promise;
+                },
+
+                checkClosed: function (year) {
+                    var q = $q.defer();
+
+                    db('stc_closing_log')
+                    .count('* as total')
+                    .where('closed_year', year)
+                    .exec(function (err, rows) {
+                        if (err) q.reject(err);
+                        else {
+                            if (rows[0].total > 0) q.resolve(true);
+                            else q.resolve(false);
+                        }
+                    });
+
+                    return q.promise;
                 }
 
             };

@@ -8,7 +8,7 @@
             var db = Config.getConnection();
 
             return {
-                getOrders: function (isImported) {
+                getOrders: function (isImported, startDate, endDate) {
                     var q = $q.defer();
                     /*
                     select o.order_code, o.order_date, o.supplier_code, s.name as supplier_name,
@@ -26,6 +26,7 @@
                         .innerJoin('stc_orders_detail as d', 'd.order_id', 'o.id')
                         .leftJoin('stc_suppliers as s', 's.code', 'o.supplier_code')
                         .where('o.is_imported', isImported)
+                        .whereBetween('o.order_date', [startDate, endDate])
                         .groupBy('o.order_code')
                         .orderBy('o.order_date')
                         .exec(function (err, rows) {

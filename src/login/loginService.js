@@ -16,7 +16,7 @@
                     var hash = crypto.createHmac('sha256', App.saltKey)
                         .update(password)
                         .digest('base64');
-                    console.log(hash);
+                        
                     db('stc_users')
                         .where('username', username)
                         .where('password', hash)

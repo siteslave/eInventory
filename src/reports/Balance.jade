@@ -24,9 +24,16 @@ block content
         form.form-inline(role="form").well-sm
             | &nbsp;ค้นหา &nbsp;
             input(type="text", ng-model="query", style="width: 250px;", placeholder="ระบุคำค้นหา...").form-control
-            //- button(type="button").btn.btn-success.pull-right
-            //-     i.fa.fa-file-excel-o
-            //-     | &nbsp;ส่งออก
+            | &nbsp;|&nbsp;
+            | &nbsp;คงเหลือน้อยกว่า&nbsp;
+            input(type="number", ng-model="qtyQuery", style="width: 100px;", placeholder="คงเหลือ").form-control
+            | &nbsp;
+            button(type="button", ng-click="getFilter()").btn.btn-default
+                i.fa.fa-search
+                | &nbsp;กรอง
+            button(type="button", ng-click="getAll()").btn.btn-success.pull-right
+                i.fa.fa-refresh
+                | &nbsp;แสดงทั้งหมด
         br
         div(cg-busy="{promise:promise,message:'กรุณารอซักครู่...', backdrop:true}")
             table.table.table-hover.well-sm
@@ -43,7 +50,7 @@ block content
                         th คงเหลือ
                         //- th #
                 tbody
-                    tr(ng-repeat="p in products | filter: query")
+                    tr(ng-repeat="p in products | filter: {name: query}")
                         td.text-right {{$index+1}}
                         td.text-center {{p.icode}}
                         td {{p.name}}

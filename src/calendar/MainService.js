@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('app.calendar.MainService', [])
-    
+
         .factory('MainService', function ($q, Config) {
 
             var db = Config.getConnection();
@@ -30,9 +30,10 @@
                 getPeriod: function () {
                     var q = $q.defer();
 
-                    db('stc_period')
-                        .select('name', 'start_date', 'end_date')
-                        .orderBy('name')
+                    db('stc_period as sp')
+                        .select('sp.name', 'sp.start_date', 'sp.end_date', 'cl.closed_at')
+                        .leftJoin('stc_closing_log as cl', 'cl.closed_year', 'sp.name')
+                        .orderBy('sp.name')
                         .exec(function (err, rows) {
                             if (err) q.reject(err);
                             else q.resolve(rows);

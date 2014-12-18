@@ -8,6 +8,7 @@
 
     angular.module('app.card.Card', [
         'ui.select2',
+        'cgBusy',
         'app.common.Config',
         'app.filters.Main',
         'app.card.MainController',

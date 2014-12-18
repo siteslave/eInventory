@@ -34,45 +34,50 @@
 
             $scope.doFilter = function () {
 
+                // reset progress bar
                 $scope.totalQtyIn = 0;
                 $scope.totalQtyOut = 0;
                 $scope.totalQty = 0;
+
+                // clear old data
+                $scope.cards = [];
 
                 // get stock card
                 var _startDate = moment($scope.startDate).format('YYYY-MM-DD'),
                     _endDate = moment($scope.endDate).format('YYYY-MM-DD');
 
                 if ($scope.range.contains($scope.startDate) && $scope.range.contains($scope.endDate)) {
-                    MainService.getStockCard($scope.drug, _startDate, _endDate)
-                        .then(function (rows) {
-                            var data = [];
-                            var currentTotal = 0;
+                    $scope.promise = MainService.getStockCard($scope.drug, _startDate, _endDate);
 
-                            _.each(rows, function (v) {
-                                currentTotal += v.qty_in;
-                                currentTotal -= v.qty_out;
-                                $scope.totalQtyIn += v.qty_in;
-                                $scope.totalQtyOut += v.qty_out;
+                    $scope.promise.then(function (rows) {
+                        var data = [];
+                        var currentTotal = 0;
 
-                                var obj = {
-                                    cdate: v.cdate,
-                                    ccode: v.ccode,
-                                    cname: v.cname,
-                                    qty_in: v.qty_in,
-                                    qty_out: v.qty_out,
-                                    current_total: currentTotal,
-                                    is_get: v.qty_in > 0
-                                };
+                        _.each(rows, function (v) {
+                            currentTotal += v.qty_in;
+                            currentTotal -= v.qty_out;
+                            $scope.totalQtyIn += v.qty_in;
+                            $scope.totalQtyOut += v.qty_out;
 
-                                data.push(obj);
-                            });
+                            var obj = {
+                                cdate: v.cdate,
+                                ccode: v.ccode,
+                                cname: v.cname,
+                                qty_in: v.qty_in,
+                                qty_out: v.qty_out,
+                                current_total: currentTotal,
+                                is_get: v.qty_in > 0
+                            };
 
-                            $scope.totalQty = $scope.totalQtyIn - $scope.totalQtyOut;
-                            $scope.cards = data;
-
-                        }, function (err) {
-                            console.log(err);
+                            data.push(obj);
                         });
+
+                        $scope.totalQty = $scope.totalQtyIn - $scope.totalQtyOut;
+                        $scope.cards = data;
+
+                    }, function (err) {
+                        console.log(err);
+                    });
                 } else {
                     // not in period
                     swal({

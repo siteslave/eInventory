@@ -15,6 +15,8 @@
 
             $scope.tab = 0;
 
+            $scope.year = $window.sessionStorage.getItem('year');
+
             $scope.setTab = function (tab) {
                 $scope.tab = tab;
             };
@@ -148,66 +150,81 @@
 
             $scope.doImportPayment = function () {
 
-                $scope._startDate = $window.sessionStorage.getItem('startDate');
-                $scope._endDate = $window.sessionStorage.getItem('endDate');
-
-                $scope.range = moment().range(moment($scope._startDate, 'YYYY-MM-DD'), moment($scope._endDate, 'YYYY-MM-DD'));
-
-                if ($scope.range.contains($scope.startDate) && $scope.range.contains($scope.endDate)) {
-
-                    $scope.paymentIsImported = false;
-
-                    $scope.payments = 0;
-                    $scope.totalPayment = 0;
-                    $scope.currentImportPayment = 0;
-                    $scope.importedPaymentPercent = '0%';
-
-                    // check duplicated log
-
-                    var _startDate = moment($scope.startDate).format('YYYY-MM-DD'),
-                        _endDate = moment($scope.endDate).format('YYYY-MM-DD');
-
-                    var promise = HOSxPService.checkDuplicatedPaymentLog(_startDate, _endDate);
-                    promise.then(function (isDuplicated) {
-                        if (isDuplicated) {
-
+                // Check closed
+                HOSxPService.checkClosed($scope.year)
+                    .then(function (resp) {
+                        if (resp) {
                             swal({
-                                title: "Are you sure?",
-                                text: "รายการนี้เคยนำเข้าระบบแล้ว ต้องการนำเข้าอีกหรือไม่?",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "ใช่, ฉันต้องการนำเข้า!",
-                                cancelButtonText: 'ยกเลิก',
-                                closeOnConfirm: true
-                            }, function () {
-                                importPayment(_startDate, _endDate);
+                                title: 'เกิดข้อผิดพลาด',
+                                text: 'ปีงบประมาณนี้ได้ถูกปิดไปแล้ว ไม่สามารถทำรายการได้อีก',
+                                type: 'warning',
+                                confirmButtonText: 'ตกลง'
                             });
-
-                            $scope.paymentIsImported = true;
-
                         } else {
-                            HOSxPService.savePaymentLog(_startDate, _endDate)
-                                .then(function () {
-                                    importPayment(_startDate, _endDate);
+                            $scope._startDate = $window.sessionStorage.getItem('startDate');
+                            $scope._endDate = $window.sessionStorage.getItem('endDate');
+
+                            $scope.range = moment().range(moment($scope._startDate, 'YYYY-MM-DD'), moment($scope._endDate, 'YYYY-MM-DD'));
+
+                            if ($scope.range.contains($scope.startDate) && $scope.range.contains($scope.endDate)) {
+
+                                $scope.paymentIsImported = false;
+
+                                $scope.payments = 0;
+                                $scope.totalPayment = 0;
+                                $scope.currentImportPayment = 0;
+                                $scope.importedPaymentPercent = '0%';
+
+                                // check duplicated log
+
+                                var _startDate = moment($scope.startDate).format('YYYY-MM-DD'),
+                                _endDate = moment($scope.endDate).format('YYYY-MM-DD');
+
+                                var promise = HOSxPService.checkDuplicatedPaymentLog(_startDate, _endDate);
+                                promise.then(function (isDuplicated) {
+                                    if (isDuplicated) {
+
+                                        swal({
+                                            title: "Are you sure?",
+                                            text: "รายการนี้เคยนำเข้าระบบแล้ว ต้องการนำเข้าอีกหรือไม่?",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "ใช่, ฉันต้องการนำเข้า!",
+                                            cancelButtonText: 'ยกเลิก',
+                                            closeOnConfirm: true
+                                        }, function () {
+                                            importPayment(_startDate, _endDate);
+                                        });
+
+                                        $scope.paymentIsImported = true;
+
+                                    } else {
+                                        HOSxPService.savePaymentLog(_startDate, _endDate)
+                                        .then(function () {
+                                            importPayment(_startDate, _endDate);
+                                        }, function (err) {
+                                            console.log('[Insert log]: ' + err);
+                                            alert('Error [Insert log]: Please see error in console');
+                                        });
+                                    }
                                 }, function (err) {
-                                    console.log('[Insert log]: ' + err);
-                                    alert('Error [Insert log]: Please see error in console');
+                                    console.log(err);
+                                    alert('Error: View console to see log');
                                 });
+                            } else {
+                                // not in period
+                                swal({
+                                    title: 'เกิดข้อผิดพลาด',
+                                    text: 'ช่วงเวลาที่กำหนดไม่ได้อยู่ในปีงบประมาณ ปัจจุบัน ' + '['+$window.sessionStorage.getItem('year')+']',
+                                    type: 'warning',
+                                    confirmButtonText: 'ตกลง'
+                                });
+                            }
                         }
                     }, function (err) {
                         console.log(err);
-                        alert('Error: View console to see log');
                     });
-                } else {
-                    // not in period
-                    swal({
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'ช่วงเวลาที่กำหนดไม่ได้อยู่ในปีงบประมาณ ปัจจุบัน ' + '['+$window.sessionStorage.getItem('year')+']',
-                        type: 'warning',
-                        confirmButtonText: 'ตกลง'
-                    });
-                }
 
             };
 

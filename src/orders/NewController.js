@@ -6,7 +6,7 @@
         moment = require('moment');
 
     angular.module('app.orders.NewController', [])
-        .controller('NewController', function ($scope, NewService) {
+        .controller('NewController', function ($scope, $window, NewService) {
 
             $scope.suppliers = []; // all suppliers
             $scope.drugs = []; // all drugs
@@ -101,7 +101,6 @@
 
                     }
 
-
                     $scope.clearForm();
 
                 } else {
@@ -134,43 +133,55 @@
             // clear order
             $scope.saveOrder = function () {
 
-                if (_.size($scope.items) && $scope.orderDate && $scope.supplier && $scope.orderCode) {
-                    var data = {
-                        supplier_code: $scope.supplier,
-                        order_code: $scope.orderCode,
-                        order_date: moment($scope.orderDate).format('YYYY-MM-DD'),
-                        created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
-                        updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
-                    };
+                var year = $window.sessionStorage.getItem('year');
 
-                    NewService.checkDuplicated(data.order_code)
-                        .then(function (isDuplicated) {
-                            if (isDuplicated) {
-                                swal({
-                                    title: 'ข้อมูลซ้ำ',
-                                    text: 'เนื่องจากเลขที่ใบเบิกนี้ได้เคยบันทึกเข้าระบบแล้ว ไม่สามารถบันทึกซ้ำได้อีก กรุณาตรวจสอบ' ,
-                                    type: 'warning',
-                                    confirmButtonText: 'ตกลง',
-                                    confirmButtonColor: "#DD6B55",
-                                    timer: 2000
-                                });
-                            } else {
-                                NewService.saveOrder(data)
-                                    .then(function (orderId) {
-                                        // save order detail
-                                        var items = [];
-                                        _.forEach($scope.items, function (v) {
-                                            var item = {
-                                                icode: v.icode,
-                                                order_id: orderId,
-                                                price: v.price,
-                                                qty: v.qty
-                                            };
+                NewService.checkClosed(year)
+                    .then(function (resp) {
+                        if (resp) {
+                            swal({
+                                title: 'เกิดข้อผิดพลาด',
+                                text: 'ปีงบประมาณนี้ได้ถูกปิดไปแล้ว ไม่สามารถปิดได้อีก ' + '['+ year +']',
+                                type: 'warning',
+                                confirmButtonText: 'ตกลง'
+                            });
+                        } else {
+                            if (_.size($scope.items) && $scope.orderDate && $scope.supplier && $scope.orderCode) {
+                                var data = {
+                                    supplier_code: $scope.supplier,
+                                    order_code: $scope.orderCode,
+                                    order_date: moment($scope.orderDate).format('YYYY-MM-DD'),
+                                    created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+                                    updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
+                                };
 
-                                            items.push(item);
+                                NewService.checkDuplicated(data.order_code)
+                                .then(function (isDuplicated) {
+                                    if (isDuplicated) {
+                                        swal({
+                                            title: 'ข้อมูลซ้ำ',
+                                            text: 'เนื่องจากเลขที่ใบเบิกนี้ได้เคยบันทึกเข้าระบบแล้ว ไม่สามารถบันทึกซ้ำได้อีก กรุณาตรวจสอบ' ,
+                                            type: 'warning',
+                                            confirmButtonText: 'ตกลง',
+                                            confirmButtonColor: "#DD6B55",
+                                            timer: 2000
                                         });
+                                    } else {
+                                        NewService.saveOrder(data)
+                                        .then(function (orderId) {
+                                            // save order detail
+                                            var items = [];
+                                            _.forEach($scope.items, function (v) {
+                                                var item = {
+                                                    icode: v.icode,
+                                                    order_id: orderId,
+                                                    price: v.price,
+                                                    qty: v.qty
+                                                };
 
-                                        NewService.saveOrderDetail(items)
+                                                items.push(item);
+                                            });
+
+                                            NewService.saveOrderDetail(items)
                                             .then(function () {
                                                 $scope.items = [];
                                                 $scope.orderDate = null;
@@ -197,34 +208,37 @@
                                                 });
                                             });
 
-                                    }, function (err) {
-                                        console.log(err);
+                                        }, function (err) {
+                                            console.log(err);
+                                        });
+                                    }
+
+                                }, function (err) {
+                                    console.log(err);
+                                    swal({
+                                        title: 'เกิดข้อผิดพลาด',
+                                        text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
+                                        type: 'warning',
+                                        confirmButtonText: 'ตกลง',
+                                        confirmButtonColor: "#DD6B55",
+                                        timer: 2000
                                     });
+                                });
+
+                            } else {
+                                swal({
+                                    title: 'เกิดข้อผิดพลาด',
+                                    text: 'ไม่พบรายการเวชภัณฑ์ที่ต้องการเบิก',
+                                    type: 'warning',
+                                    confirmButtonText: 'ตกลง',
+                                    confirmButtonColor: "#DD6B55",
+                                    timer: 2000
+                                });
                             }
-
-                        }, function (err) {
-                            console.log(err);
-                            swal({
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'เกิดข้อผิดพลาดในการบันทึกรายการ',
-                                type: 'warning',
-                                confirmButtonText: 'ตกลง',
-                                confirmButtonColor: "#DD6B55",
-                                timer: 2000
-                            });
-                        });
-
-                } else {
-                    swal({
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'ไม่พบรายการเวชภัณฑ์ที่ต้องการเบิก',
-                        type: 'warning',
-                        confirmButtonText: 'ตกลง',
-                        confirmButtonColor: "#DD6B55",
-                        timer: 2000
+                        }
+                    }, function (err) {
+                        console.log(err);
                     });
-                }
-
             };
 
 

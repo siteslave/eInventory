@@ -34,6 +34,7 @@ block content
                                         th ปีงบประมาณ
                                         th ตั้งแต่
                                         th ถึง
+                                        th ปิด ณ
                                         th #
                                 tbody
                                     tr(ng-repeat="p in peroid")
@@ -41,8 +42,9 @@ block content
                                             strong {{p.name}}
                                         td.text-center {{p.start_date | toThaiDate}}
                                         td.text-center {{p.end_date | toThaiDate}}
+                                        td.text-center {{p.closed_at | toThaiDate}}
                                         td
-                                            button(type="button", ng-click="setEdit(p.name, p.start_date, p.end_date)").btn.btn-primary
+                                            button(type="button", ng-click="setEdit(p.name, p.start_date, p.end_date)", ng-disabled="p.closed_at").btn.btn-primary
                                                 i.fa.fa-edit
 
         .col-sm-4.col-md-4.col-lg-4(ng-show="showEdit")

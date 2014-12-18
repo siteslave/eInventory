@@ -1,0 +1,55 @@
+extends ../layouts/Main
+
+block scripts
+    script(src="Closing.js")
+    script(src="ClosingController.js")
+    script(src="ClosingService.js")
+        
+block content
+    ol.breadcrumb
+        li
+            a(href="../pages/Index.html")
+                i.fa.fa-home
+                | &nbsp;หน้าหลัก
+        li.active
+            i.fa.fa-calculator
+            | &nbsp;ปิดบัญชี
+    
+    div(ng-app="app.tools.Closing", ng-controller="ClosingController")
+        
+        .alert.alert-danger
+            i.fa.fa-warning
+            strong &nbsp;กรุณาตรวจสอบ! &nbsp;
+            | เมื่อคุณได้ทำการปิดบัญชีแล้ว จะไม่สามารถแก้ไขรายการ (ใบเบิก/นำเข้า/ตัดสต๊อก) ได้อีก กรุณาตรวจสอบความถูกต้องก่อนดำเนินการ
+
+        form(role="form", name="frmClosing").form-horizontal.well-sm
+            .row
+                .col-sm-6.col-md-6.col-lg-6
+                    label วันที่ต้องการปิด (วันที่เริ่มต้นในปีงบถัดไป)
+                    input(type="date", ng-model="closeDate", style="width: 150px;", ng-required="true").form-control
+            .row
+                .col-sm-2.col-md-2.col-lg-2
+                    label ปีงบประมาณ&nbsp;
+                    input(type="text", ng-model="year", style="width: 80px;", ng-readonly="true", ng-required="true").form-control    
+                .col-sm-2.col-md-2.col-lg-2
+                    label &nbsp;ตั้งแต่วันที่&nbsp;
+                    input(type="date", ng-model="startDate", style="width: 150px;", ng-readonly="true", ng-required="true").form-control
+                .col-sm-2.col-md-2.col-lg-2
+                    label &nbsp;ถึงวันที่&nbsp;
+                    input(type="date", ng-model="endDate", style="width: 150px;", ng-readonly="true", ng-required="true").form-control
+
+            br
+            .btn-group
+                button(type="button", ng-click="doClose()", ng-disabled="frmClosing.$invalid").btn.btn-danger
+                    i.fa.fa-refresh
+                    | &nbsp;ยืนยันการปิดบัญชี
+                a(href="../pages/Index.html").btn.btn-default
+                    i.fa.fa-home
+                    | &nbsp;กลับหน้าหลัก
+
+            br
+            br
+            
+            .progress(ng-show="isShowProgress")
+                .progress-bar.progress-bar-danger(role="progressbar", ng-style="{'width': currentPercentText}")
+                    | {{currentPercentText}}

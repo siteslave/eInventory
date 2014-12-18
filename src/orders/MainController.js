@@ -1,6 +1,6 @@
 ;(function (window, angular) {
     angular.module('app.orders.MainController', [])
-        .controller('MainController', function ($scope, MainService) {
+        .controller('MainController', function ($scope, $window, MainService) {
 
             $scope.orders = []; // all order list
             $scope.isProcessing = false;
@@ -14,7 +14,11 @@
                 });
 
             $scope.getList = function (isImported) {
-                MainService.getOrders(isImported)
+
+                $scope.startDate = $window.sessionStorage.getItem('startDate');
+                $scope.endDate = $window.sessionStorage.getItem('endDate');
+
+                MainService.getOrders(isImported, $scope.startDate, $scope.endDate)
                 .then(function (rows) {
                     $scope.orders = rows;
                 }, function (err) {
