@@ -15,7 +15,7 @@
                     label &nbsp;วันที่&nbsp;
                     input(type="date", style="width: 130px;", ng-model="orderDate").form-control.input-sm
                     label &nbsp;คลัง&nbsp;
-                    select.form-control.input-sm(ng-model="supplier", style="width: 270px;", ui-select2="select2Options")
+                    select.form-control.input-sm(ng-model="supplier", style="width: 250px;", ui-select2="select2Options")
                         option(ng-repeat="s in suppliers", value="{{s.code}}") [{{s.code}}] {{s.name}}
                 table.table.table
                     thead

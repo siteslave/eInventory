@@ -31,7 +31,18 @@
             };
             // Exit program
             $scope.doExit = function () {
-                if (confirm('คุณต้องการปิดโปรแกรมใช่หรือไม่?')) App.doExit();
+                swal({
+                    title: "Are you sure?",
+                    text: "คุณต้องการปิดโปรแกรมใช่หรือไม่?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "ใช่, ฉันต้องการออกจากโปรแกรม!",
+                    cancelButtonText: 'ยกเลิก',
+                    closeOnConfirm: true
+                }, function () {
+                    App.doExit();
+                });
             };
 
             Login.getPeriod()

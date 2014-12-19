@@ -130,6 +130,13 @@
                 _.remove($scope.items, {icode: icode});
             };
 
+            // Clear order
+            $scope.clearOrder = function () {
+                $scope.items = [];
+                $scope.orderCode = '';
+                $scope.orderDate = null;
+                $scope.supplier = null;
+            };
             // clear order
             $scope.saveOrder = function () {
 
