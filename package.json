@@ -2,11 +2,11 @@
   "name": "eInventory",
   "version": "1.0.0",
   "description": "Drug Inventory System",
-  "main": "app/login/login.html",
+  "main": "app/login/Login.html",
   "locale": "th_TH",
   "single-instance": false,
   "window": {
-    "show": false,
+    "show": true,
     "title": "Drug Inventory System",
     "icon": "app/img/icon.png",
     "toolbar": true,

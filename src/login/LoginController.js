@@ -16,7 +16,7 @@
                                     $window.sessionStorage.setItem('year', $scope.period);
                                     $window.sessionStorage.setItem('startDate', moment(rows.start_date).format('YYYY-MM-DD'));
                                     $window.sessionStorage.setItem('endDate', moment(rows.end_date).format('YYYY-MM-DD'));
-                                    location.href = '../pages/index.html';
+                                    location.href = '../pages/Index.html';
                                 }, function (err) {
                                     console.log(err);
                                 });
