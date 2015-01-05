@@ -19,20 +19,20 @@ App.configFile = path.join(App.appPath, 'config.json');
 var isExist = fs.existsSync(App.configFile);
 
 if (!isExist) {
-    var config = {
+    var defaultConfig = {
         db: {
             host: '127.0.0.1',
             port: 3306,
             database: 'einv',
             user: 'root',
-            password: ''
+            password: '789124'
         },
         hosxp: {
             host: '127.0.0.1',
             port: 3306,
             database: 'hosxp_pcu',
             user: 'root',
-            password: ''
+            password: '789124'
         },
         dc: {
             url: 'http://his.mkh.go.th:3001',
@@ -40,7 +40,7 @@ if (!isExist) {
         }
     };
     // create configure file
-    jf.writeFileSync(App.configFile, config);
+    jf.writeFileSync(App.configFile, defaultConfig);
 }
 
 // Exit program

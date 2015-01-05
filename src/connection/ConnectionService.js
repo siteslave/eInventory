@@ -7,11 +7,12 @@
  * @alias   ConnectionService
  * @usage   Add 'app.connection.ConnectionService' to module dependency injection
  */
-;(function () {
+(function () {
 
     'use strict';
 
-    var jf = require('jsonfile');
+    var jf = require('jsonfile'),
+        App = window.App;
 
     angular.module('app.connection.ConnectionService', [])
         .factory('ConnectionService', function ($q) {
@@ -29,7 +30,7 @@
                     }
 
                     return q.promise;
-                  }
+                }
             };
         });
 

@@ -80,23 +80,23 @@ block content
                         .row
                             .col-sm-6.col-md-6.col-lg-6
                                 .form-group
-                                    label(for="txtHOSUserName") Username
+                                    label(for="txtHOSUserName") Username {{hosxp_username}}
                                     input#txtHOSUserName(type="text", placeholder="root", ng-model="hosxp_username", ng-required="true").form-control
                             .col-sm-6.col-md-6.col-lg-6
                                 .form-group
                                     label(for="txtHOSPassword") Password
-                                    input#txtHOSUserName(type="password", placeholder="", ng-model="hosxp_password").form-control
+                                    input#txtHOSPassword(type="password", placeholder="", ng-model="hosxp_password").form-control
                         .row
                             .col-sm-12.col-md-12.col-lg-12
                                 small.text-info
                                     i.fa.fa-info
                                     | &nbsp; กำหนดค่าการเชื่อมตอกับฐานข้อมูล HIS ของหน่วยบริการ (HOSxP, HOSxP_PCU)
-            .row
-                .col-sm-12.col-md-12.col-lg-12.center-x
-                    .btn-group
-                        button(type="button", ng-click="saveConnection()", ng-disabled="!frmSetting.$valid").btn.btn-success
-                            i.fa.fa-save
-                            | &nbsp;บันทึกข้อมูล
-                        a(href="../login/Login.html").btn.btn-default
-                            i.fa.fa-home
-                            | &nbsp;ยกเลิก/กลับ
+        .row
+            .col-sm-12.col-md-12.col-lg-12.center-x
+                .btn-group
+                    button(type="button", ng-click="saveConnection()", ng-disabled="!frmSetting.$valid").btn.btn-success
+                        i.fa.fa-save
+                        | &nbsp;บันทึกข้อมูล
+                    a(href="../login/Login.html").btn.btn-default
+                        i.fa.fa-home
+                        | &nbsp;ยกเลิก/กลับ

@@ -1,35 +1,29 @@
-;(function (window, angular) {
+(function (window, angular) {
 
     'use strict';
 
     angular.module('app.connection.ConnectionController', [])
         .controller('ConnectionController', function ($scope, ConnectionService, Config) {
 
-            var config = Config.getConfigure(),
-                _hosxp_username = null,
-                _hosxp_password = null;
+            var configDB = Config.getConfigure();
 
-            $scope.host = config.db.host;
-            $scope.port = config.db.port;
-            $scope.dbname = config.db.database;
-            $scope.username = config.db.user;
-            $scope.password = config.db.password;
-            $scope.url = config.dc.url;
-            $scope.private_key = config.dc.private_key;
-            $scope.hosxp_host = config.hosxp.host;
-            $scope.hosxp_username = config.hosxp.user;
-            $scope.hosxp_password = config.hosxp.password;
-            $scope.hosxp_port = config.hosxp.port;
-            $scope.hosxp_dbname = config.hosxp.database;
+            $scope.host = configDB.db.host;
+            $scope.port = configDB.db.port;
+            $scope.dbname = configDB.db.database;
+            $scope.username = configDB.db.user;
+            $scope.password = configDB.db.password;
+            $scope.url = configDB.dc.url;
+            $scope.private_key = configDB.dc.private_key;
+            $scope.hosxp_host = configDB.hosxp.host;
+            $scope.hosxp_username = configDB.hosxp.user;
+            $scope.hosxp_password = configDB.hosxp.password;
+            $scope.hosxp_port = configDB.hosxp.port;
+            $scope.hosxp_dbname = configDB.hosxp.database;
 
-            $scope.$watch(function (scope) {
-                _hosxp_username = scope.hosxp_username;
-                _hosxp_password = scope.hosxp_password;
-            });
             // When save button click this event will be fire
             $scope.saveConnection = function () {
 
-                var config = {
+                var configData = {
                     db: {
                         host: $scope.host,
                         port: $scope.port,
@@ -45,13 +39,13 @@
                         host: $scope.hosxp_host,
                         port: $scope.hosxp_port,
                         database: $scope.hosxp_dbname,
-                        user: _hosxp_username,
-                        password: _hosxp_password
+                        user: $scope.hosxp_username,
+                        password: $scope.hosxp_password
                     }
                 };
 
                 // Save configure to json file
-                ConnectionService.saveConnection(config)
+                ConnectionService.saveConnection(configData)
                     .then(function () {
                         swal({
                             title: 'สำเร็จ',
@@ -61,7 +55,7 @@
                             timer: 1500
                         });
 
-                        console.log(config);
+                        console.log(configData);
 
                     }, function (err) {
                        alert('เกิดข้อผิดพลาด: ' + JSON.stringify(err));
