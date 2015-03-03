@@ -25,11 +25,8 @@
                             if (err) {
                                 q.reject(err);
                             } else {
-                                if (rows[0].total) {
-                                    return q.resolve(true);
-                                } else {
-                                    return q.resolve(false);
-                                }
+                                var result = rows[0].total > 0;
+                                return q.resolve(result);
                             }
                         });
 

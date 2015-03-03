@@ -2,7 +2,7 @@
     var App = window.App,
         moment = require('moment');
 
-    angular.module('app.login.LoginController', ['app.login.LoginService'])
+    angular.module('app.login.LoginController', [])
         .controller('LoginController', function ($scope, $window, Login) {
             $scope.isFailed = false;
             $scope.period = null;

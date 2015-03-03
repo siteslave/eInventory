@@ -25,14 +25,16 @@ if (!isExist) {
             port: 3306,
             database: 'einv',
             user: 'root',
-            password: '789124'
+            password: '789124',
+            charset   : 'utf8'
         },
         hosxp: {
             host: '127.0.0.1',
             port: 3306,
             database: 'hosxp_pcu',
             user: 'root',
-            password: '789124'
+            password: '789124',
+            charset   : 'utf8'
         },
         dc: {
             url: 'http://his.mkh.go.th:3001',

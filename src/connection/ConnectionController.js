@@ -29,7 +29,8 @@
                         port: $scope.port,
                         database: $scope.dbname,
                         user: $scope.username,
-                        password: $scope.password
+                        password: $scope.password,
+                        charset   : 'utf8'
                     },
                     dc: {
                         url: $scope.url,
@@ -40,7 +41,8 @@
                         port: $scope.hosxp_port,
                         database: $scope.hosxp_dbname,
                         user: $scope.hosxp_username,
-                        password: $scope.hosxp_password
+                        password: $scope.hosxp_password,
+                        charset   : 'utf8'
                     }
                 };
 
@@ -55,10 +57,9 @@
                             timer: 1500
                         });
 
-                        console.log(configData);
-
                     }, function (err) {
-                       alert('เกิดข้อผิดพลาด: ' + JSON.stringify(err));
+                        console.log(err);
+                       alert('เกิดข้อผิดพลาด');
                     });
             };
 

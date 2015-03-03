@@ -33,10 +33,24 @@ html(lang="en")
                     //-     a(href="../pages/Index.html")
                     //-         i.fa.fa-fw.fa-home
                     //-         | &nbsp;หน้าหลัก
-                    li
-                        a(href="../orders/Orders.html")
+                    li.dropdown
+                        a(href="#", data-toggle="dropdown").dropdown-toggle
                             i.fa.fa-fw.fa-shopping-cart
                             | &nbsp;เบิกเวชภัณฑ์
+                            span.caret
+                        ul.dropdown-menu(role="menu")
+                            li
+                                a(href="../products/Product.html")
+                                    i.fa.fa-fw.fa-shopping-cart
+                                    | &nbsp;เบิกคลังหลัก (Online)
+                            li
+                                a(href="#")
+                                    i.fa.fa-fw.fa-cut
+                                    | &nbsp;ตัดเบิกไปคลังย่อย
+                    //- li
+                    //-     a(href="../orders/Orders.html")
+                    //-         i.fa.fa-fw.fa-shopping-cart
+                    //-         | &nbsp;เบิกเวชภัณฑ์
                     li.dropdown
                         a(href="#", data-toggle="dropdown").dropdown-toggle
                             i.fa.fa-fw.fa-cogs &nbsp;
@@ -55,10 +69,15 @@ html(lang="en")
                                 a(href="#")
                                     i.fa.fa-fw.fa-user-md
                                     | &nbsp;เจ้าหน้าที่
+                            //- li
+                            //-     a(href="../stock/Stock.html")
+                            //-         i.fa.fa-fw.fa-database
+                            //-         | &nbsp;คลังยาหลัก
+                            //- 
                             li
-                                a(href="../stock/Stock.html")
+                                a(href="../customer/Customer.html")
                                     i.fa.fa-fw.fa-database
-                                    | &nbsp;คลังยาหลัก
+                                    | &nbsp;คลังยาย่อย
                             li.divider
                             li
                                 a(href="../calendar/Calendar.html")
@@ -84,15 +103,19 @@ html(lang="en")
                             | &nbsp;เครื่องมือ
                             span.caret
                         ul.dropdown-menu(role="menu")
-                            li
-                                a(href="../import/Import.html")
-                                    i.fa.fa-fw.fa-database
-                                    | &nbsp;นำเข้าข้อมูล
-                            li
-                                a(href="../clearance/Clearance.html")
-                                    i.fa.fa-fw.fa-filter
-                                    | &nbsp;ตัด Stock
-                            li.divider
+                            //- li
+                            //-     a(href="../import/Import.html")
+                            //-         i.fa.fa-fw.fa-database
+                            //-         | &nbsp;นำเข้าข้อมูล
+                            //- li
+                            //-     a(href="../clearance/Clearance.html")
+                            //-         i.fa.fa-fw.fa-filter
+                            //-         | &nbsp;ตัด Stock
+                            //- li
+                            //-     a(href="")
+                            //-         i.fa.fa-fw-fa-filter
+                            //-         | &nbsp;ตัดยอดจากคลังย่อย
+                            //- li.divider
                             li
                                 a(href="../tools/Closing.html")
                                     i.fa.fa-fw.fa-calendar
